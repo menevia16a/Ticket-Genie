@@ -12,8 +12,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="About"/>
             <MenuItem Header="Character Manager"/>
+            <MenuItem Header="About"/>
             <MenuItem Header="Exit" Click="OnExitClick"/>
         </Menu>
         <Grid Grid.Row="1">
@@ -21,8 +21,8 @@
                 <ColumnDefinition Width="*" MinWidth="150"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="ticketList" ItemsSource="{Binding OpenTicketsList}" Grid.Column="0" Background="#FF8A8A8A"/>
-            <ListView x:Name="ticketView" ItemsSource="{Binding TicketInformationPanel}" Grid.Column="1" Background="#FF8A8A8A">
+            <ListBox x:Name="TicketList" ItemsSource="{Binding OpenTicketsList}" Grid.Column="0" Background="#FF8A8A8A"/>
+            <ListView x:Name="TicketView" ItemsSource="{Binding TicketInformationPanel}" Grid.Column="1" Background="#FF8A8A8A">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>

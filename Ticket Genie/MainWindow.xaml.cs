@@ -33,7 +33,7 @@ namespace Ticket_Genie
                 var listItem = new ListViewItem();
                 // Get the name property from the ticket object as the content for the list item
                 listItem.Content = ticket.name;
-                ticketList.Items.Add(listItem);
+                TicketList.Items.Add(listItem);
             }
         }
 
