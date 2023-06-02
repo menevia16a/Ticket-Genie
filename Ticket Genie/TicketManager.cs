@@ -47,23 +47,20 @@ namespace Ticket_Genie
             using (var connection = _dbConnector.GetConnection())
             {
                 connection.Open();
-                var command = new MySqlCommand("SELECT id, name, description, response, completed, closedBy FROM gm_ticket", connection);
+                var command = new MySqlCommand("SELECT id, name, closedBy FROM gm_ticket", connection);
                 var reader = command.ExecuteReader();
 
                 var tickets = new List<Ticket>();
                 while (reader.Read())
                 {
                     // Check if the ticket is already closed, and don't list
-                    if (reader.GetInt32(5) == 0)
+                    if (reader.GetInt32(2) == 0)
                     {
                         tickets.Add(new Ticket
                         {
                             id = reader.GetInt32(0),
                             name = reader.GetString(1),
-                            description = reader.GetString(2),
-                            response = reader.GetString(3),
-                            completed = reader.GetInt32(4),
-                            closedBy = reader.GetInt32(5)
+                            closedBy = reader.GetInt32(2)
                         });
                     }
                 }

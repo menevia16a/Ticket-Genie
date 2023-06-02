@@ -26,13 +26,14 @@ namespace Ticket_Genie
             {
                 return;
             }
-            
+
             foreach (var ticket in tickets)
             {
-                // Add the ticket to the left side list on the main window
-                var listItem = new ListViewItem();
-                // Get the name property from the ticket object as the content for the list item
-                listItem.Content = ticket.name;
+                //Add the ticket to the left side list on the main window
+                Ticket listItem = new Ticket();
+                listItem.id = ticket.id;
+                listItem.name = ticket.name;
+                listItem.closedBy = ticket.closedBy;
                 TicketList.Items.Add(listItem);
             }
         }
@@ -42,17 +43,18 @@ namespace Ticket_Genie
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
             // Retrieve selected ticket from list view
-            if (sender is ListView listView && listView.SelectedItem is Ticket selectedTicket)
+            if (sender is ListBox listBox && listBox.SelectedItem is Ticket selectedTicket)
             {
                 var ticketDetails = _ticketManager.GetTicket(selectedTicket.id);
 
                 if (ticketDetails != null)
                 {
+                    // update the UI ticket info
                     TextBlock ticketIDBlock = (TextBlock)FindName("TicketID");
                     TextBlock ticketNameBlock = (TextBlock)FindName("TicketName");
                     TextBlock ticketDescriptionBlock = (TextBlock)FindName("TicketDescription");
-                    ticketIDBlock.Text = selectedTicket.id.ToString();
-                    ticketNameBlock.Text = selectedTicket.name;
+                    ticketIDBlock.Text = ticketDetails.id.ToString();
+                    ticketNameBlock.Text = ticketDetails.name;
                     ticketDescriptionBlock.Text = ticketDetails.description;
                 }
             }

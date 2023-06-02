@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ticket_Genie"
         mc:Ignorable="d"
-        Title="Ticket Genie" Height="450" Width="800">
+        Title="Ticket Genie" Height="450" Width="850">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -21,17 +21,16 @@
                 <ColumnDefinition Width="*" MinWidth="150"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="TicketList" ItemsSource="{Binding OpenTicketsList}" Grid.Column="0" Background="#FF8A8A8A" SelectionChanged="OnTicketSelected"/>
-            <ListView x:Name="TicketView" ItemsSource="{Binding TicketInformationPanel}" Grid.Column="1" Background="#FF8A8A8A">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock x:Name="TickeID" Text="" FontWeight="Bold" FontSize="16"/>
-                            <TextBlock x:Name="TicketName" Text="" FontSize="12"/>
-                            <TextBlock x:Name="TicketDescription" Text="" FontSize="10"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF8A8A8A" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name"/>
+            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF8A8A8A" HorizontalContentAlignment="Left" IsHitTestVisible="False">
+                <StackPanel>
+                    <TextBlock Text="Ticket ID:" FontWeight="Bold" Margin="0,0,150,0"/>
+                    <TextBlock x:Name="TicketID" Margin="60,-16,0,0"/>
+                    <TextBlock Text="Character Name:" FontWeight="Bold" Margin="0,0,150,0"/>
+                    <TextBlock x:Name="TicketName" Margin="100,-16,0,0"/>
+                    <TextBlock Text="Ticket Description:" FontWeight="Bold"/>
+                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="395" Height="340"/>
+                </StackPanel>
             </ListView>
         </Grid>
     </Grid>
