@@ -19,6 +19,18 @@ namespace Ticket_Genie
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            LoginWindow loginWindow = new LoginWindow();
+            bool? loginSuccess = loginWindow.ShowDialog();
+
+            if (loginSuccess == null || !loginSuccess.Value)
+            {
+                //Close the application because login wasn't succesful
+                Application.Current.Shutdown();
+                return;
+            }
+
+            // If login is succesful, show the main window
+            Show();
             // Retrieve all tickets and display them on the UI
             var tickets = _ticketManager.GetAllTickets();
 
