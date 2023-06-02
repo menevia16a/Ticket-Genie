@@ -25,20 +25,18 @@ namespace Ticket_Genie
                 if (reader.Read())
                 {
                     // Check if the ticket is already closed, and don't list
-                    if (reader.GetInt32(4) != 0)
+                    if (reader.GetInt32(5) == 0)
                     {
-                        return null;
+                        return new Ticket
+                        {
+                            id = reader.GetInt32(0),
+                            name = reader.GetString(1),
+                            description = reader.GetString(2),
+                            response = reader.GetString(3),
+                            completed = reader.GetInt32(4),
+                            closedBy = reader.GetInt32(5)
+                        };
                     }
-
-                    return new Ticket
-                    {
-                        id = reader.GetInt32(0),
-                        name = reader.GetString(1),
-                        description = reader.GetString(2),
-                        response = reader.GetString(3),
-                        completed = reader.GetInt32(4),
-                        closedBy = reader.GetInt32(5)
-                    };
                 }
                 return null;
             }
@@ -56,20 +54,18 @@ namespace Ticket_Genie
                 while (reader.Read())
                 {
                     // Check if the ticket is already closed, and don't list
-                    if (reader.GetInt32(4) != 0)
+                    if (reader.GetInt32(5) == 0)
                     {
-                        return null;
+                        tickets.Add(new Ticket
+                        {
+                            id = reader.GetInt32(0),
+                            name = reader.GetString(1),
+                            description = reader.GetString(2),
+                            response = reader.GetString(3),
+                            completed = reader.GetInt32(4),
+                            closedBy = reader.GetInt32(5)
+                        });
                     }
-
-                    tickets.Add(new Ticket
-                    {
-                        id = reader.GetInt32(0),
-                        name = reader.GetString(1),
-                        description = reader.GetString(2),
-                        response = reader.GetString(3),
-                        completed = reader.GetInt32(4),
-                        closedBy = reader.GetInt32(5)
-                    });
                 }
                 return tickets;
             }

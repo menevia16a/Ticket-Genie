@@ -1,3 +1,5 @@
+using System.Dynamic;
+
 public class Ticket
 {
     public int id { get; set; }
@@ -6,4 +8,5 @@ public class Ticket
     public string response { get; set; }
     public int completed { get; set; }
     public int closedBy { get; set; }
+    public int resolvedBy { get; set; }
 }

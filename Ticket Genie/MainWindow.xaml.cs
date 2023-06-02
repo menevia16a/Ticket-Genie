@@ -37,28 +37,24 @@ namespace Ticket_Genie
             }
         }
 
-        private void OnExitClick(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        private void OnExitClick(object sender, RoutedEventArgs e) { Application.Current.Shutdown(); }
 
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
             // Retrieve selected ticket from list view
-            var selectedTicket = (sender as ListView).SelectedItem as Ticket;
-
-            // Retrieve additional ticket information
-            var ticketDetails = _ticketManager.GetTicket(selectedTicket.id);
-
-            // Display ticket information on the right panel
-            if (ticketDetails != null)
+            if (sender is ListView listView && listView.SelectedItem is Ticket selectedTicket)
             {
-                TextBlock ticketIDBlock = (TextBlock)FindName("TicketID");
-                TextBlock ticketNameBlock = (TextBlock)FindName("TicketName");
-                TextBlock ticketDescriptionBlock = (TextBlock)FindName("TicketDescription");
-                ticketIDBlock.Text = selectedTicket.id.ToString();
-                ticketNameBlock.Text = selectedTicket.name;
-                ticketDescriptionBlock.Text = ticketDetails.description;
+                var ticketDetails = _ticketManager.GetTicket(selectedTicket.id);
+
+                if (ticketDetails != null)
+                {
+                    TextBlock ticketIDBlock = (TextBlock)FindName("TicketID");
+                    TextBlock ticketNameBlock = (TextBlock)FindName("TicketName");
+                    TextBlock ticketDescriptionBlock = (TextBlock)FindName("TicketDescription");
+                    ticketIDBlock.Text = selectedTicket.id.ToString();
+                    ticketNameBlock.Text = selectedTicket.name;
+                    ticketDescriptionBlock.Text = ticketDetails.description;
+                }
             }
         }
     }

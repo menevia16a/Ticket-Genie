@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="*" MinWidth="150"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="TicketList" ItemsSource="{Binding OpenTicketsList}" Grid.Column="0" Background="#FF8A8A8A"/>
+            <ListBox x:Name="TicketList" ItemsSource="{Binding OpenTicketsList}" Grid.Column="0" Background="#FF8A8A8A" SelectionChanged="OnTicketSelected"/>
             <ListView x:Name="TicketView" ItemsSource="{Binding TicketInformationPanel}" Grid.Column="1" Background="#FF8A8A8A">
                 <ListView.ItemTemplate>
                     <DataTemplate>
