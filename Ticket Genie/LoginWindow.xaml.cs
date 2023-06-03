@@ -14,7 +14,7 @@ namespace Ticket_Genie
         public LoginWindow()
         {
             InitializeComponent();
-            _dbConnector = new DBConnector("Server=***REMOVED***;Database=auth;Uid=***REMOVED***;Pwd=***REMOVED***;Port=***REMOVED***;");
+            _dbConnector = new DBConnector(Properties.Settings.Default.AuthDB);
         }
 
         public bool GetLoginSuccess()
@@ -53,6 +53,7 @@ namespace Ticket_Genie
 
                     if (usernameFromDB == username && securityLevel > 1) // Verify username and security level
                     {
+                        Properties.Settings.Default.AccountID = accountID;
                         loginSuccess = true;
                         DialogResult = true;
                         Close();

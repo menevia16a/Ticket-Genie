@@ -8,22 +8,50 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ticket_Genie.Properties
-{
-
-
+namespace Ticket_Genie.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.6.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int AccountID {
+            get {
+                return ((int)(this["AccountID"]));
+            }
+            set {
+                this["AccountID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=***REMOVED***;Database=characters;Uid=***REMOVED***;Pwd=Mallokfirew" +
+            "ind98;Port=***REMOVED***;")]
+        public string CharactersDB {
+            get {
+                return ((string)(this["CharactersDB"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=***REMOVED***;Database=auth;Uid=***REMOVED***;Pwd=***REMOVED***;" +
+            "Port=***REMOVED***;")]
+        public string AuthDB {
+            get {
+                return ((string)(this["AuthDB"]));
             }
         }
     }

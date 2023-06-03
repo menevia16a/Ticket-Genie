@@ -7,7 +7,7 @@ namespace Ticket_Genie
     {
         private readonly DBConnector _dbConnector;
 
-        public TicketManager() { _dbConnector = new DBConnector("Server=***REMOVED***;Database=characters;Uid=***REMOVED***;Pwd=***REMOVED***;Port=***REMOVED***;"); }
+        public TicketManager() { _dbConnector = new DBConnector(Properties.Settings.Default.CharactersDB); }
 
         public void UpdateTickets(Ticket ticket)
         {
