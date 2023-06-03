@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ticket_Genie"
         mc:Ignorable="d"
+        Background="#FF8A8A8A"
         ResizeMode="NoResize"
         Title="Ticket Genie" Height="480" Width="860">
     <Grid>
@@ -22,8 +23,8 @@
                 <ColumnDefinition Width="*" MinWidth="150"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF8A8A8A" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name"/>
-            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF8A8A8A" HorizontalContentAlignment="Left" IsHitTestVisible="False">
+            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name"/>
+            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False">
                 <StackPanel>
                     <TextBlock Text="Ticket ID:" FontWeight="Bold" Margin="0,0,150,0"/>
                     <TextBlock x:Name="TicketID" Margin="60,-16,0,0"/>

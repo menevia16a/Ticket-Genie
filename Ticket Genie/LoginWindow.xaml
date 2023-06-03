@@ -6,15 +6,16 @@
         xmlns:local="clr-namespace:Ticket_Genie"
         mc:Ignorable="d"
         Background="#FF8A8A8A"
-        Title="LoginWindow" Height="250" Width="800">
+        ResizeMode="NoResize"
+        Title="GM Login" Height="250" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="2" Content="Username" Margin="0,68,0,-24"/>
-        <TextBox Grid.Row="2" x:Name="UsernameBox" Margin="0,99,0,-65"/>
+        <Label Grid.Row="2" Content="Username:" Margin="0,59,0,-15" HorizontalAlignment="Center" Width="73" FontWeight="Bold"/>
+        <TextBox Grid.Row="2" x:Name="UsernameBox" Margin="224,99,224,-65" Background="#FF58607B"/>
         <Button Grid.Row="2" Content="Log in" Margin="300,154,300,-154" Click="OnClickLogin"/>
     </Grid>
 </Window>
