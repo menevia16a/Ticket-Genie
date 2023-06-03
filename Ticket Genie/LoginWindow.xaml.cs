@@ -1,5 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Windows;
+using System.Windows.Controls;
+using Essy.Tools.InputBox;
+using System.Linq;
 
 namespace Ticket_Genie
 {
@@ -17,10 +20,7 @@ namespace Ticket_Genie
             _dbConnector = new DBConnector(Properties.Settings.Default.AuthDB);
         }
 
-        public bool GetLoginSuccess()
-        {
-            return loginSuccess;
-        }
+        public bool GetLoginSuccess() { return loginSuccess; }
 
         private void OnClickLogin(object sender, RoutedEventArgs e)
         {
@@ -51,18 +51,57 @@ namespace Ticket_Genie
                     // Store security level
                     int securityLevel = reader2.GetInt32(0);
 
+                    reader2.Close();
+
                     if (usernameFromDB == username && securityLevel > 1) // Verify username and security level
                     {
-                        Properties.Settings.Default.AccountID = accountID;
-                        Properties.Settings.Default.Save();
-                        loginSuccess = true;
-                        DialogResult = true;
-                        Close();
+                        var command3 = new MySqlCommand("SELECT TicketGeniePin FROM account_access WHERE AccountID = @id", connection);
+                        command3.Parameters.AddWithValue("@id", accountID);
+                        var reader3 = command3.ExecuteReader();
+
+                        if (reader3.Read())
+                        {
+                            var password = reader3.GetValue(0);
+
+                            if (string.IsNullOrEmpty(password.ToString()))
+                            {
+                                // Prompt user to set a PIN
+                                reader3.Close();
+                                MessageBox.Show("First login detected. Please set a 4 digit PIN", "Pin Setup", MessageBoxButton.OK, MessageBoxImage.Information);
+                                
+                                string pin = InputBox.ShowInputBox("Input 4 digit PIN", true);
+                                
+                                if (pin.Count() == 4)
+                                {
+                                    var command4 = new MySqlCommand("UPDATE account_access SET TicketGeniePin = @pin WHERE AccountID = @id", connection);
+                                    command4.Parameters.AddWithValue("@pin", pin);
+                                    command4.Parameters.AddWithValue("@id", accountID);
+                                    command4.ExecuteNonQuery();
+                                    Properties.Settings.Default.AccountID = accountID;
+                                    Properties.Settings.Default.Save();
+                                    loginSuccess = true;
+                                    DialogResult = true;
+                                    Close();
+                                }
+                                else { MessageBox.Show("Invalid PIN", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
+                            }
+                            else
+                            {
+                                string pin = InputBox.ShowInputBox("Input 4 digit PIN", true);
+
+                                if (password == pin)
+                                {
+                                    Properties.Settings.Default.AccountID = accountID;
+                                    Properties.Settings.Default.Save();
+                                    loginSuccess = true;
+                                    DialogResult = true;
+                                    Close();
+                                }
+                                else { MessageBox.Show("Invalid PIN", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
+                            }
+                        }
                     }
-                    else
-                    {
-                        MessageBox.Show("Invalid username or insufficient security level", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    else { MessageBox.Show("Invalid username or insufficient security level", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
                 }
                 else
                 {
