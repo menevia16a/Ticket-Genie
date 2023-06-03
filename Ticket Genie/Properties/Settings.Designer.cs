@@ -54,5 +54,17 @@ namespace Ticket_Genie.Properties {
                 return ((string)(this["AuthDB"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CharacterGUID {
+            get {
+                return ((int)(this["CharacterGUID"]));
+            }
+            set {
+                this["CharacterGUID"] = value;
+            }
+        }
     }
 }

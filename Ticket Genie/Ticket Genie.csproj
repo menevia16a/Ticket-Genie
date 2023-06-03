@@ -95,6 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Character.cs" />
     <Compile Include="CharacterManagerWindow.xaml.cs">
       <DependentUpon>CharacterManagerWindow.xaml</DependentUpon>
     </Compile>

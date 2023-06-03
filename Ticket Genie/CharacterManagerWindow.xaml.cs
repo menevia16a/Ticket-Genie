@@ -1,16 +1,9 @@
-﻿using System;
+﻿using System.Windows;
+using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Media.TextFormatting;
+using System;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Ticket_Genie
 {
@@ -19,9 +12,59 @@ namespace Ticket_Genie
     /// </summary>
     public partial class CharacterManagerWindow : Window
     {
+        private readonly DBConnector _dbConnector;
+
         public CharacterManagerWindow()
         {
             InitializeComponent();
+            _dbConnector = new DBConnector(Properties.Settings.Default.CharactersDB);
+            Loaded += CharacterManagerWindow_Loaded;
+        }
+
+        public IEnumerable<Character> GetCharacters(int accountId)
+        {
+            using (var connection = _dbConnector.GetConnection())
+            {
+                connection.Open();
+                var command = new MySqlCommand("SELECT guid, name FROM characters WHERE account = @id", connection);
+                command.Parameters.AddWithValue("@id", accountId);
+                var reader = command.ExecuteReader();
+                var characters = new List<Character>();
+                while (reader.Read())
+                {
+                    var character = new Character
+                    {
+                        charGuid = reader.GetInt32(0),
+                        name = reader.GetString(1)
+                    };
+                    characters.Add(character);
+                }
+                CharactersList.ItemsSource = characters;
+                return characters;
+            }
+        }
+
+        private void CharacterManagerWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            int accountId = Properties.Settings.Default.AccountID;
+
+            GetCharacters(accountId);
+        }
+
+        private void OnCharacterSelected(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox listBox && listBox.SelectedItem is Character selectedCharacter)
+            {
+                // Save selected character's GUID to Properties.Settings.Default.CharacterGUID
+                Properties.Settings.Default.CharacterGUID = selectedCharacter.charGuid;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void OnSelectClick(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
         }
     }
 }

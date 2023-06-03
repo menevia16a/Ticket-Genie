@@ -52,7 +52,7 @@ namespace Ticket_Genie
 
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
-            // Retrieve selected ticket from list view
+            // Retrieve selected ticket
             if (sender is ListBox listBox && listBox.SelectedItem is Ticket selectedTicket)
             {
                 var ticketDetails = _ticketManager.GetTicket(selectedTicket.id);
@@ -68,6 +68,13 @@ namespace Ticket_Genie
                     ticketDescriptionBlock.Text = ticketDetails.description;
                 }
             }
+        }
+
+        private void OnCharacterManagerClick(object sender, RoutedEventArgs e)
+        {
+            // Open the Character Manager window to select a character
+            var characterManager = new CharacterManagerWindow();
+            characterManager.ShowDialog();
         }
     }
 }

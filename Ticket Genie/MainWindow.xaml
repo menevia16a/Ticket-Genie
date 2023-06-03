@@ -7,14 +7,15 @@
         mc:Ignorable="d"
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
-        Title="Ticket Genie" Height="480" Width="860">
+        Title="Ticket Genie" Height="480" Width="860"
+        WindowStyle="ToolWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="Character Manager"/>
+            <MenuItem Header="Character Manager" Click="OnCharacterManagerClick"/>
             <MenuItem Header="About"/>
             <MenuItem Header="Exit" Click="OnExitClick"/>
         </Menu>
@@ -42,9 +43,9 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button Content="Respond" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-393,-5" Grid.Row="1"/>
-                    <Button Content="Close" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-338,-5" Grid.Row="1"/>
-                    <Button Content="Ban" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-300,-5" Grid.Row="1"/>
+                    <Button Content="Respond" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-393,-5" Grid.Row="1" Background="#6495ED" Foreground="White"/>
+                    <Button Content="Close" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-338,-5" Grid.Row="1" Background="#6495ED" Foreground="White"/>
+                    <Button Content="Ban" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-300,-5" Grid.Row="1" Background="#6495ED" Foreground="White"/>
                 </Grid>
             </ListView>
         </Grid>

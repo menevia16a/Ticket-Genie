@@ -54,6 +54,7 @@ namespace Ticket_Genie
                     if (usernameFromDB == username && securityLevel > 1) // Verify username and security level
                     {
                         Properties.Settings.Default.AccountID = accountID;
+                        Properties.Settings.Default.Save();
                         loginSuccess = true;
                         DialogResult = true;
                         Close();
