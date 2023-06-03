@@ -15,6 +15,6 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="2" Content="Username" Margin="0,68,0,-24"/>
         <TextBox Grid.Row="2" x:Name="UsernameBox" Margin="0,99,0,-65"/>
-        <Button Grid.Row="2" Content="Log in" Margin="300,161,300,-161" Click="OnClickLogin"/>
+        <Button Grid.Row="2" Content="Log in" Margin="300,154,300,-154" Click="OnClickLogin"/>
     </Grid>
 </Window>
