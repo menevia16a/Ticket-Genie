@@ -19,34 +19,32 @@ namespace Ticket_Genie
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            bool? loginSuccess = loginWindow.ShowDialog();
+            var loginWindow = new LoginWindow();
 
-            if (loginSuccess == null || !loginSuccess.Value)
+            if (!loginWindow.GetLoginSuccess())
             {
-                //Close the application because login wasn't succesful
-                Application.Current.Shutdown();
-                return;
-            }
+                if (loginWindow.ShowDialog() == true)
+                {
+                    // Retrieve all tickets and display them on the UI
+                    var tickets = _ticketManager.GetAllTickets();
 
-            // If login is succesful, show the main window
-            Show();
-            // Retrieve all tickets and display them on the UI
-            var tickets = _ticketManager.GetAllTickets();
+                    if (tickets == null)
+                    {
+                        return;
+                    }
 
-            if (tickets == null)
-            {
-                return;
-            }
-
-            foreach (var ticket in tickets)
-            {
-                //Add the ticket to the left side list on the main window
-                Ticket listItem = new Ticket();
-                listItem.id = ticket.id;
-                listItem.name = ticket.name;
-                listItem.closedBy = ticket.closedBy;
-                TicketList.Items.Add(listItem);
+                    foreach (var ticket in tickets)
+                    {
+                        //Add the ticket to the left side list on the main window
+                        Ticket listItem = new Ticket();
+                        listItem.id = ticket.id;
+                        listItem.name = ticket.name;
+                        listItem.closedBy = ticket.closedBy;
+                        TicketList.Items.Add(listItem);
+                    }
+                }
+                else
+                    Application.Current.Shutdown();
             }
         }
 
