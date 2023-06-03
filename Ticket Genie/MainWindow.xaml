@@ -29,8 +29,21 @@
                     <TextBlock Text="Character Name:" FontWeight="Bold" Margin="0,0,150,0"/>
                     <TextBlock x:Name="TicketName" Margin="100,-16,0,0"/>
                     <TextBlock Text="Ticket Description:" FontWeight="Bold"/>
-                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="395" Height="340"/>
+                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="394" Height="310"/>
                 </StackPanel>
+                <Grid Margin="10 10 0 10" HorizontalAlignment="Right">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Respond" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-393,-5" Grid.Row="1"/>
+                    <Button Content="Close" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-338,-5" Grid.Row="1"/>
+                    <Button Content="Ban" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-300,-5" Grid.Row="1"/>
+                </Grid>
             </ListView>
         </Grid>
     </Grid>
