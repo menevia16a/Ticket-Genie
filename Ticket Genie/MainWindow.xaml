@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ticket_Genie"
         mc:Ignorable="d"
-        Title="Ticket Genie" Height="450" Width="850">
+        ResizeMode="NoResize"
+        Title="Ticket Genie" Height="480" Width="860">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
