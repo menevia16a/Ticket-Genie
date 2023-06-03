@@ -20,6 +20,9 @@ namespace Ticket_Genie
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             var loginWindow = new LoginWindow();
+            Properties.Settings.Default.AccountID = 0;
+            Properties.Settings.Default.CharacterGUID = 0;
+            Properties.Settings.Default.Save();
 
             if (!loginWindow.GetLoginSuccess())
             {
@@ -52,6 +55,13 @@ namespace Ticket_Genie
 
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
+            // Check if a character has been selected, if not then send a message
+            if (Properties.Settings.Default.CharacterGUID == 0)
+            {
+                MessageBox.Show("Please select a character first.", "No Character Selected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             // Retrieve selected ticket
             if (sender is ListBox listBox && listBox.SelectedItem is Ticket selectedTicket)
             {

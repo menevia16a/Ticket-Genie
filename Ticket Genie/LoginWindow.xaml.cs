@@ -89,7 +89,7 @@ namespace Ticket_Genie
                             {
                                 string pin = InputBox.ShowInputBox("Input 4 digit PIN", true);
 
-                                if (password == pin)
+                                if (password.ToString() == pin)
                                 {
                                     Properties.Settings.Default.AccountID = accountID;
                                     Properties.Settings.Default.Save();
