@@ -95,6 +95,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Character.cs" />
     <Compile Include="CharacterManagerWindow.xaml.cs">
       <DependentUpon>CharacterManagerWindow.xaml</DependentUpon>
@@ -104,6 +107,10 @@
     </Compile>
     <Compile Include="Ticket.cs" />
     <Compile Include="TicketManager.cs" />
+    <Page Include="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CharacterManagerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

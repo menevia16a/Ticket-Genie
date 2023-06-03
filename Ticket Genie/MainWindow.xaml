@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="Character Manager" Click="OnCharacterManagerClick"/>
-            <MenuItem Header="About"/>
+            <MenuItem Header="About" Click="OnAboutClick"/>
             <MenuItem Header="Exit" Click="OnExitClick"/>
         </Menu>
         <Grid Grid.Row="1">

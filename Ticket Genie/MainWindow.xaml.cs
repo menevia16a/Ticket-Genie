@@ -76,5 +76,12 @@ namespace Ticket_Genie
             var characterManager = new CharacterManagerWindow();
             characterManager.ShowDialog();
         }
+
+        private void OnAboutClick(object sender, RoutedEventArgs e)
+        {
+            // Open the AboutWindow
+            var aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
+        }
     }
 }

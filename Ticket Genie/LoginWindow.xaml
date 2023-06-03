@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ticket_Genie"
-        mc:Ignorable="d" Background="#FF8A8A8A"
+        mc:Ignorable="d"
+        Background="#FF8A8A8A"
         ResizeMode="NoResize"
         Title="GM Login" Height="201" Width="258"
         WindowStyle="ToolWindow">
