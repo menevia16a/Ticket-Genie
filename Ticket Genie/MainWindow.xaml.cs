@@ -93,5 +93,28 @@ namespace Ticket_Genie
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
+
+        private void OnRefreshClick(object sender, RoutedEventArgs e)
+        {
+            // Trigger ticket list updating
+            TicketList.Items.Clear();
+            var tickets = _ticketManager.GetAllTickets();
+
+            if (tickets == null)
+            {
+                return;
+            }
+
+            foreach ( var ticket in tickets)
+            {
+                Ticket listItem = new Ticket();
+                listItem.id = ticket.id;
+                listItem.name = ticket.name;
+                listItem.closedBy = ticket.closedBy;
+                TicketList.Items.Add(listItem);
+            }
+
+            MessageBox.Show("The list of tickets has been updated.", "Ticket List Refresh", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

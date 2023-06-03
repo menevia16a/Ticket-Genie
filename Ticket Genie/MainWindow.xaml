@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
-        Title="Ticket Genie" Height="480" Width="860"
+        Title="Ticket Genie" Height="600" Width="860"
         WindowStyle="ToolWindow">
-    <Grid>
+    <Grid Height="572" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -19,35 +19,26 @@
             <MenuItem Header="About" Click="OnAboutClick"/>
             <MenuItem Header="Exit" Click="OnExitClick"/>
         </Menu>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0,0,0,42">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="150"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
             <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name"/>
-            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False">
-                <StackPanel>
-                    <TextBlock Text="Ticket ID:" FontWeight="Bold" Margin="0,0,150,0"/>
-                    <TextBlock x:Name="TicketID" Margin="60,-16,0,0"/>
-                    <TextBlock Text="Character Name:" FontWeight="Bold" Margin="0,0,150,0"/>
-                    <TextBlock x:Name="TicketName" Margin="100,-16,0,0"/>
-                    <TextBlock Text="Ticket Description:" FontWeight="Bold"/>
-                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="394" Height="310"/>
+            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False" Grid.RowSpan="2">
+                <StackPanel Margin="5 5 0 5">
+                    <TextBlock Text="Ticket ID:" FontWeight="Bold"/>
+                    <TextBlock x:Name="TicketID"/>
+                    <TextBlock Text="Character Name:" FontWeight="Bold" Margin="0 5 0 0"/>
+                    <TextBlock x:Name="TicketName"/>
+                    <TextBlock Text="Ticket Description:" FontWeight="Bold" Margin="0 5 0 0"/>
+                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="394" Height="356"/>
                 </StackPanel>
-                <Grid Margin="10 10 0 10" HorizontalAlignment="Right">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0*"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Respond" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-393,-5" Grid.Row="1" Background="#6495ED" Foreground="White"/>
-                    <Button Content="Close" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-338,-5" Grid.Row="1" Background="#6495ED" Foreground="White"/>
-                    <Button Content="Ban" Grid.Column="1" HorizontalAlignment="Right" Margin="0,5,-300,-5" Grid.Row="1" Background="#6495ED" Foreground="White"/>
-                </Grid>
             </ListView>
         </Grid>
+        <Button Content="Refresh" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRefreshClick" Margin="10,517,0,15" Grid.Row="1" Width="58"/>
+        <Button Content="Respond" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,10,15" Grid.Row="1" Width="58"/>
+        <Button Content="Close" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,72,15" Grid.Row="1" Width="58"/>
+        <Button Content="Ban" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,135,15" Grid.Row="1" Width="58"/>
     </Grid>
 </Window>
