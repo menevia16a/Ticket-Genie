@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-using System.Windows.Media.TextFormatting;
-using System;
 using System.Windows.Controls;
 
 namespace Ticket_Genie
