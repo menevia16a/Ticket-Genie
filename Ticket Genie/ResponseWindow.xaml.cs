@@ -35,7 +35,7 @@ namespace Ticket_Genie
                 _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);
                 _ticketManager.CompleteTicket(Properties.Settings.Default.CurrentTicketID);
                 _ticketManager.UpdateTickets();
-                MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been completed.", "Information");
+                MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been completed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
         }
@@ -43,7 +43,7 @@ namespace Ticket_Genie
         {
             // Save the reponse, but don't complete the ticket
             _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);
-            MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been saved.", "Information");
+            MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been saved.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             Close();
         }
     }
