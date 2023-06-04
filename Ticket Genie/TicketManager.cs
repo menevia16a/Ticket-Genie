@@ -43,26 +43,41 @@ namespace Ticket_Genie
             using (var connection = _dbConnector.GetConnection())
             {
                 connection.Open();
-                var command = new MySqlCommand("SELECT id, name, description, response, completed, closedBy FROM gm_ticket WHERE id = @id", connection);
+                var command = new MySqlCommand("SELECT id, type, playerGuid, name, description, closedBy, response, completed, viewed FROM gm_ticket WHERE id = @id", connection);
                 command.Parameters.AddWithValue("@id", id);
                 var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
+                    int type = reader.GetInt32(1);
+
                     // Check if the ticket is already closed, and don't list
-                    if (reader.GetInt32(5) == 0)
+                    if (type == 0)
                     {
-                        var command2 = new MySqlCommand("UPDATE gm_ticket SET viewed = 1 WHERE id = @id", connection);
+                        int playerGuid = reader.GetInt32(2);
+                        string name = reader.GetString(3);
+                        string description = reader.GetString(4);
+                        int closedBy = reader.GetInt32(5);
+                        string response = reader.GetString(6);
+                        int completed = reader.GetInt32(7);
+                        int viewed = reader.GetInt32(8);
+
+                        reader.Close();
+
+                        var command2 = new MySqlCommand("UPDATE gm_ticket SET viewed = @viewedCount WHERE id = @id", connection);
+                        command2.Parameters.AddWithValue("@viewedCount", viewed + 1);
                         command2.Parameters.AddWithValue("@id", id);
                         command2.ExecuteNonQuery();
 
                         return new Ticket
                         {
-                            id = reader.GetInt32(0),
-                            name = reader.GetString(1),
-                            description = reader.GetString(2),
-                            response = reader.GetString(3),
-                            completed = reader.GetInt32(4),
-                            closedBy = reader.GetInt32(5)
+                            id = id,
+                            type = type,
+                            playerGUID = playerGuid,
+                            name = name,
+                            description = description,
+                            closedBy = closedBy,
+                            response = response,
+                            completed = completed
                         };
                     }
                 }
@@ -75,20 +90,22 @@ namespace Ticket_Genie
             using (var connection = _dbConnector.GetConnection())
             {
                 connection.Open();
-                var command = new MySqlCommand("SELECT id, name, closedBy FROM gm_ticket", connection);
+                var command = new MySqlCommand("SELECT id, type, name, closedBy FROM gm_ticket", connection);
                 var reader = command.ExecuteReader();
 
                 var tickets = new List<Ticket>();
                 while (reader.Read())
                 {
+                    int type = reader.GetInt32(1);
+
                     // Check if the ticket is already closed, and don't list
-                    if (reader.GetInt32(2) == 0)
+                    if (type == 0)
                     {
                         tickets.Add(new Ticket
                         {
+
                             id = reader.GetInt32(0),
-                            name = reader.GetString(1),
-                            closedBy = reader.GetInt32(2)
+                            name = reader.GetString(2)
                         });
                     }
                 }
