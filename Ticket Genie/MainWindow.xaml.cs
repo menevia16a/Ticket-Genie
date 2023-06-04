@@ -86,6 +86,29 @@ namespace Ticket_Genie
             }
         }
 
+        private void RefreshTicketList()
+        {
+            // Trigger ticket list updating
+            TicketList.Items.Clear();
+            TicketID.Text = "";
+            TicketName.Text = "";
+            TicketDescription.Text = "";
+            var tickets = _ticketManager.GetAllTickets();
+            Properties.Settings.Default.CurrentTicketID = 0;
+            Properties.Settings.Default.Save();
+
+            if (tickets == null)
+                return;
+
+            foreach (var ticket in tickets)
+            {
+                Ticket listItem = new Ticket();
+                listItem.id = ticket.id;
+                listItem.name = ticket.name;
+                TicketList.Items.Add(listItem);
+            }
+        }
+
         private void OnCharacterManagerClick(object sender, RoutedEventArgs e)
         {
             // Open the Character Manager window to select a character
@@ -102,26 +125,7 @@ namespace Ticket_Genie
 
         private void OnRefreshClick(object sender, RoutedEventArgs e)
         {
-            // Trigger ticket list updating
-            TicketList.Items.Clear();
-            TicketID.Text = "";
-            TicketName.Text = "";
-            TicketDescription.Text = "";
-            var tickets = _ticketManager.GetAllTickets();
-            Properties.Settings.Default.CurrentTicketID = 0;
-            Properties.Settings.Default.Save();
-
-            if (tickets == null)
-                return;
-
-            foreach ( var ticket in tickets)
-            {
-                Ticket listItem = new Ticket();
-                listItem.id = ticket.id;
-                listItem.name = ticket.name;
-                TicketList.Items.Add(listItem);
-            }
-
+            RefreshTicketList();
             MessageBox.Show("The list of tickets has been updated.", "Ticket List Refresh", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -137,6 +141,38 @@ namespace Ticket_Genie
             // Display GM Response window
             var gmResponseWindow = new ResponseWindow();
             gmResponseWindow.ShowDialog();
+        }
+
+        private void OnCloseClick(object sender, RoutedEventArgs e)
+        {
+            // Ask for confirmation
+            var result = MessageBox.Show("Are you sure you want to close this ticket?", "Close Ticket", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                // Close the ticket
+                var ticketID = Properties.Settings.Default.CurrentTicketID;
+
+                if (ticketID == 0)
+                {
+                    MessageBox.Show("Please select a ticket first.", "No Ticket Selected", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                else
+                {
+                    _ticketManager.CloseTicket(ticketID);
+                    _ticketManager.UpdateTickets();
+                    RefreshTicketList();
+                }
+
+                MessageBox.Show("The ticket has been closed.", "Ticket Closed", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void OnAccountToolsClick(object sender, RoutedEventArgs e)
+        {
+            // TODO: Implement dashboard for account tools
+            MessageBox.Show("This feature is not yet implemented.", "Account Tools", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

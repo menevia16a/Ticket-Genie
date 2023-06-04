@@ -40,6 +40,19 @@ namespace Ticket_Genie
             }
         }
 
+        public void CloseTicket(int ticketID)
+        {
+            // Close the ticket
+            using (var connection = _dbConnector.GetConnection())
+            {
+                connection.Open();
+                var command = new MySqlCommand("UPDATE gm_ticket SET type = 1, closedBy = @accountID WHERE id = @ticketID", connection);
+                command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
+                command.Parameters.AddWithValue("@ticketID", ticketID);
+                command.ExecuteNonQuery();
+            }
+        }
+
         public Ticket GetTicket(int id)
         {
             using (var connection = _dbConnector.GetConnection())

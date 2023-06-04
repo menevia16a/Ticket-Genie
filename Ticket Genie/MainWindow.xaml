@@ -31,8 +31,8 @@
                     <TextBlock x:Name="TicketID" HorizontalAlignment="Left" Margin="60 -15 0 0" Width="50"/>
                     <TextBlock HorizontalAlignment="Left" Text="Character Name:" FontWeight="Bold" Margin="0 5 0 0"/>
                     <TextBlock x:Name="TicketName" HorizontalAlignment="Left" Margin="100 -15 0 0" Width="100"/>
-                    <TextBlock HorizontalAlignment="Left" Text="Player GUID:" FontWeight="Bold"/>
-                    <TextBlock x:Name="PlayerGUID" HorizontalAlignment="Left" Margin="80 -15 0 0" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Text="GUID:" FontWeight="Bold"/>
+                    <TextBlock x:Name="PlayerGUID" HorizontalAlignment="Left" Margin="35 -15 0 0" Width="50"/>
                     <TextBlock HorizontalAlignment="Left" Text="Viewed Count:" FontWeight="Bold"/>
                     <TextBlock x:Name="ViewedCount" HorizontalAlignment="Left" Margin="90 -15 0 0" Width="50"/>
                     <TextBlock HorizontalAlignment="Left" Text="Creation:" FontWeight="Bold" Width="54"/>
@@ -47,6 +47,6 @@
         <Button Content="Refresh" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRefreshClick" Margin="10,517,0,15" Grid.Row="1" Width="58"/>
         <Button Content="Respond" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRespondClick" Margin="0,517,10,15" Grid.Row="1" Width="58"/>
         <Button Content="Close" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,72,15" Grid.Row="1" Width="58"/>
-        <Button Content="Account Tools" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,135,15" Grid.Row="1" Width="100"/>
+        <Button Content="Account Tools" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnAccountToolsClick" Margin="0,517,135,15" Grid.Row="1" Width="100"/>
     </Grid>
 </Window>
