@@ -29,7 +29,7 @@ namespace Ticket_Genie
         private void OnFinalizeClick(object sender, RoutedEventArgs e)
         {
             // Let the user know this will complete the ticket, effectively closing it and ask if they wish to proceed
-            var result = MessageBox.Show("Are you sure you wish to complete this ticket?", "Confirmation", MessageBoxButton.YesNo);
+            var result = MessageBox.Show("Are you sure you wish to complete this ticket?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if (result == MessageBoxResult.Yes)
             {
                 _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);

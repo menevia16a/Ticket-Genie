@@ -8,7 +8,11 @@ namespace Ticket_Genie
         private readonly TCSOAPService _tcSoapService;
         private readonly DBConnector _dbConnector;
 
-        public TicketManager() { _dbConnector = new DBConnector(Properties.Settings.Default.CharactersDB); }
+        public TicketManager()
+        {
+            _dbConnector = new DBConnector(Properties.Settings.Default.CharactersDB);
+            _tcSoapService = new TCSOAPService();
+        }
 
         // Reloads the GM tickets in-game
         public void UpdateTickets() { _tcSoapService.Call("reload gm_ticket"); }
@@ -33,7 +37,7 @@ namespace Ticket_Genie
             using (var connection = _dbConnector.GetConnection())
             {
                 connection.Open();
-                var command = new MySqlCommand("UPDATE gm_ticket SET type = 1, closedBy = @accountID, completed = 1, resolvedBy = @accountID WHERE id = @ticketID", connection);
+                var command = new MySqlCommand("UPDATE gm_ticket SET closedBy = @accountID, completed = 1, resolvedBy = @accountID WHERE id = @ticketID", connection);
                 command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
                 command.Parameters.AddWithValue("@ticketID", ticketID);
                 command.ExecuteNonQuery();
@@ -119,9 +123,10 @@ namespace Ticket_Genie
                 while (reader.Read())
                 {
                     int type = reader.GetInt32(1);
+                    int closedBy = reader.GetInt32(3);
 
                     // Check if the ticket is already closed, and don't list
-                    if (type == 0)
+                    if (type == 0 && closedBy == 0)
                     {
                         tickets.Add(new Ticket
                         {

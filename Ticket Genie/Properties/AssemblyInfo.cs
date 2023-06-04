@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -8,9 +6,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Ticket Genie")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A complete ticket master appliaction built for modern TrinityCore emulators. This will allows GMs to answer tickets in a much more professional manner like blizzard. It will allow tickets to easily be checked remotely without the GM needing to login to the game.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Veilbreaker Entertainment")]
 [assembly: AssemblyProduct("Ticket Genie")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
