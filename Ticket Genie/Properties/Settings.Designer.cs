@@ -66,5 +66,53 @@ namespace Ticket_Genie.Properties {
                 this["CharacterGUID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CurrentTicketID {
+            get {
+                return ((int)(this["CurrentTicketID"]));
+            }
+            set {
+                this["CurrentTicketID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("***REMOVED***")]
+        public string SOAPHost {
+            get {
+                return ((string)(this["SOAPHost"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7878")]
+        public int SOAPPort {
+            get {
+                return ((int)(this["SOAPPort"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("***REMOVED***")]
+        public string SOAPUser {
+            get {
+                return ((string)(this["SOAPUser"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("***REMOVED***")]
+        public string SOAPPassword {
+            get {
+                return ((string)(this["SOAPPassword"]));
+            }
+        }
     }
 }

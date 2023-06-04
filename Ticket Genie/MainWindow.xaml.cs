@@ -22,6 +22,7 @@ namespace Ticket_Genie
             var loginWindow = new LoginWindow();
             Properties.Settings.Default.AccountID = 0;
             Properties.Settings.Default.CharacterGUID = 0;
+            Properties.Settings.Default.CurrentTicketID = 0;
             Properties.Settings.Default.Save();
 
             if (!loginWindow.GetLoginSuccess())
@@ -70,12 +71,11 @@ namespace Ticket_Genie
                 if (ticketDetails != null)
                 {
                     // update the UI ticket info
-                    TextBlock ticketIDBlock = (TextBlock)FindName("TicketID");
-                    TextBlock ticketNameBlock = (TextBlock)FindName("TicketName");
-                    TextBlock ticketDescriptionBlock = (TextBlock)FindName("TicketDescription");
-                    ticketIDBlock.Text = ticketDetails.id.ToString();
-                    ticketNameBlock.Text = ticketDetails.name;
-                    ticketDescriptionBlock.Text = ticketDetails.description;
+                    TicketID.Text = ticketDetails.id.ToString();
+                    TicketName.Text = ticketDetails.name;
+                    TicketDescription.Text = ticketDetails.description;
+                    Properties.Settings.Default.CurrentTicketID = ticketDetails.id;
+                    Properties.Settings.Default.Save();
                 }
             }
         }
