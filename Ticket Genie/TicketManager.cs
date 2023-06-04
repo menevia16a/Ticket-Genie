@@ -19,8 +19,21 @@ namespace Ticket_Genie
             using (var connection = _dbConnector.GetConnection())
             {
                 connection.Open();
-                var command = new MySqlCommand("UPDATE gm_ticket SET response = @response, completed = 1, closedBy = @accountID, resolvedBy = @accountID WHERE id = @ticketID", connection);
+                var command = new MySqlCommand("UPDATE gm_ticket SET response = @response WHERE id = @ticketID", connection);
                 command.Parameters.AddWithValue("@response", response);
+                command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
+                command.Parameters.AddWithValue("@ticketID", ticketID);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void CompleteTicket(int ticketID)
+        {
+            // Complete the ticket
+            using (var connection = _dbConnector.GetConnection())
+            {
+                connection.Open();
+                var command = new MySqlCommand("UPDATE gm_ticket SET type = 1, closedBy = @accountID, completed = 1, resolvedBy = @accountID WHERE id = @ticketID", connection);
                 command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
                 command.Parameters.AddWithValue("@ticketID", ticketID);
                 command.ExecuteNonQuery();

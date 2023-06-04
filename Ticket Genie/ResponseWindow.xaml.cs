@@ -33,10 +33,18 @@ namespace Ticket_Genie
             if (result == MessageBoxResult.Yes)
             {
                 _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);
+                _ticketManager.CompleteTicket(Properties.Settings.Default.CurrentTicketID);
                 _ticketManager.UpdateTickets();
                 MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been completed.", "Information");
                 Close();
             }
+        }
+        private void OnSaveClick(object sender, RoutedEventArgs e)
+        {
+            // Save the reponse, but don't complete the ticket
+            _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);
+            MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been saved.", "Information");
+            Close();
         }
     }
 }
