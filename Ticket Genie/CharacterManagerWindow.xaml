@@ -10,7 +10,7 @@
         Title="Character List" Height="450" Width="800"
         WindowStyle="ToolWindow">
     <Grid>
-        <ListBox x:Name="CharactersList" Margin="10" VerticalAlignment="Top" Height="300" HorizontalContentAlignment="Center" SelectionMode="Single" Background="#FF58607B" SelectionChanged="OnCharacterSelected" DisplayMemberPath="name"/>
+        <ListBox x:Name="CharactersList" Margin="10" VerticalAlignment="Top" Height="300" HorizontalContentAlignment="Center" SelectionMode="Single" Background="#FF58607B" Foreground="CornflowerBlue" SelectionChanged="OnCharacterSelected" DisplayMemberPath="name"/>
         <Button Content="Select" Margin="0,351,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="156" Height="40" Background="#6495ED" Foreground="White" Click="OnSelectClick"/>
     </Grid>
 </Window>
