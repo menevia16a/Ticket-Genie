@@ -145,26 +145,23 @@ namespace Ticket_Genie
 
         private void OnCloseClick(object sender, RoutedEventArgs e)
         {
+            var ticketID = Properties.Settings.Default.CurrentTicketID;
+            
+            if (ticketID == 0)
+            {
+                MessageBox.Show("Please select a ticket first.", "No Ticket Selected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             // Ask for confirmation
             var result = MessageBox.Show("Are you sure you want to close this ticket?", "Close Ticket", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
                 // Close the ticket
-                var ticketID = Properties.Settings.Default.CurrentTicketID;
-
-                if (ticketID == 0)
-                {
-                    MessageBox.Show("Please select a ticket first.", "No Ticket Selected", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                else
-                {
-                    _ticketManager.CloseTicket(ticketID);
-                    _ticketManager.UpdateTickets();
-                    RefreshTicketList();
-                }
-
+                _ticketManager.CloseTicket(ticketID);
+                _ticketManager.UpdateTickets();
+                RefreshTicketList();
                 MessageBox.Show("The ticket has been closed.", "Ticket Closed", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

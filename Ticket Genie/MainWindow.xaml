@@ -46,7 +46,7 @@
         </Grid>
         <Button Content="Refresh" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRefreshClick" Margin="10,517,0,15" Grid.Row="1" Width="58"/>
         <Button Content="Respond" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRespondClick" Margin="0,517,10,15" Grid.Row="1" Width="58"/>
-        <Button Content="Close" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,72,15" Grid.Row="1" Width="58"/>
+        <Button Content="Close" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnCloseClick" Margin="0,517,72,15" Grid.Row="1" Width="58"/>
         <Button Content="Account Tools" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnAccountToolsClick" Margin="0,517,135,15" Grid.Row="1" Width="100"/>
     </Grid>
 </Window>
