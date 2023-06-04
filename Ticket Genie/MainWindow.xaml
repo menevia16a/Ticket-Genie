@@ -24,8 +24,8 @@
                 <ColumnDefinition Width="*" MinWidth="150"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name"/>
-            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False" Grid.RowSpan="2">
+            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name" Foreground="White"/>
+            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False" Grid.RowSpan="2" Foreground="White">
                 <StackPanel Margin="5 5 0 5">
                     <TextBlock Text="Ticket ID:" FontWeight="Bold"/>
                     <TextBlock x:Name="TicketID"/>
@@ -37,8 +37,8 @@
             </ListView>
         </Grid>
         <Button Content="Refresh" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRefreshClick" Margin="10,517,0,15" Grid.Row="1" Width="58"/>
-        <Button Content="Respond" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,10,15" Grid.Row="1" Width="58"/>
+        <Button Content="Respond" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRespondClick" Margin="0,517,10,15" Grid.Row="1" Width="58"/>
         <Button Content="Close" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,72,15" Grid.Row="1" Width="58"/>
-        <Button Content="Ban" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,135,15" Grid.Row="1" Width="58"/>
+        <Button Content="Account Tools" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Margin="0,517,135,15" Grid.Row="1" Width="100"/>
     </Grid>
 </Window>

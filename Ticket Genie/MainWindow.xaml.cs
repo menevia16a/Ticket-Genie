@@ -116,5 +116,19 @@ namespace Ticket_Genie
 
             MessageBox.Show("The list of tickets has been updated.", "Ticket List Refresh", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        private void OnRespondClick(object sender, RoutedEventArgs e)
+        {
+            // If no ticket is selected, send a message
+            if (TicketID.Text?.Length == 0)
+            {
+                MessageBox.Show("Please select a ticket first.", "No Ticket Selected", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Display GM Response window
+            var gmResponseWindow = new ResponseWindow();
+            gmResponseWindow.ShowDialog();
+        }
     }
 }

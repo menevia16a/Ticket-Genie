@@ -118,6 +118,9 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResponseWindow.xaml.cs">
+      <DependentUpon>ResponseWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ticket.cs" />
     <Compile Include="TicketManager.cs" />
     <Page Include="AboutWindow.xaml">
@@ -144,6 +147,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ResponseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBConnector.cs" />
