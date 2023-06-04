@@ -1,12 +1,5 @@
 using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace Ticket_Genie
 {
@@ -17,12 +10,8 @@ namespace Ticket_Genie
 
         public TicketManager() { _dbConnector = new DBConnector(Properties.Settings.Default.CharactersDB); }
 
-        public void UpdateTickets()
-        {
-            // Reloads the GM tickets in-game
-            TCSOAPService _tcSoapService = new TCSOAPService();
-            _tcSoapService.Call("reload gm_ticket");
-        }
+        // Reloads the GM tickets in-game
+        public void UpdateTickets() { _tcSoapService.Call("reload gm_ticket"); }
 
         public void AppendResponse(int ticketID, string response)
         {
@@ -46,6 +35,7 @@ namespace Ticket_Genie
                 var command = new MySqlCommand("SELECT id, type, playerGuid, name, description, closedBy, response, completed, viewed FROM gm_ticket WHERE id = @id", connection);
                 command.Parameters.AddWithValue("@id", id);
                 var reader = command.ExecuteReader();
+
                 if (reader.Read())
                 {
                     int type = reader.GetInt32(1);
@@ -81,6 +71,7 @@ namespace Ticket_Genie
                         };
                     }
                 }
+
                 return null;
             }
         }
@@ -92,8 +83,8 @@ namespace Ticket_Genie
                 connection.Open();
                 var command = new MySqlCommand("SELECT id, type, name, closedBy FROM gm_ticket", connection);
                 var reader = command.ExecuteReader();
-
                 var tickets = new List<Ticket>();
+
                 while (reader.Read())
                 {
                     int type = reader.GetInt32(1);
@@ -103,12 +94,12 @@ namespace Ticket_Genie
                     {
                         tickets.Add(new Ticket
                         {
-
                             id = reader.GetInt32(0),
                             name = reader.GetString(2)
                         });
                     }
                 }
+
                 return tickets;
             }
         }

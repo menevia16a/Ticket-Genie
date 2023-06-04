@@ -33,9 +33,7 @@ namespace Ticket_Genie
                     var tickets = _ticketManager.GetAllTickets();
 
                     if (tickets == null)
-                    {
                         return;
-                    }
 
                     foreach (var ticket in tickets)
                     {
@@ -98,12 +96,15 @@ namespace Ticket_Genie
         {
             // Trigger ticket list updating
             TicketList.Items.Clear();
+            TicketID.Text = "";
+            TicketName.Text = "";
+            TicketDescription.Text = "";
             var tickets = _ticketManager.GetAllTickets();
+            Properties.Settings.Default.CurrentTicketID = 0;
+            Properties.Settings.Default.Save();
 
             if (tickets == null)
-            {
                 return;
-            }
 
             foreach ( var ticket in tickets)
             {

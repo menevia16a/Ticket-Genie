@@ -1,5 +1,3 @@
-using System.Dynamic;
-
 public class Ticket
 {
     public int id { get; set; }

@@ -1,6 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Windows;
-using System.Windows.Controls;
 using Essy.Tools.InputBox;
 using System.Linq;
 

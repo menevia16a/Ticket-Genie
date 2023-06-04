@@ -27,9 +27,7 @@ namespace Ticket_Genie
             request.Headers.Add("Authorization: Basic " + Convert.ToBase64String(encodedPasswd));
 
             using (var stream = request.GetRequestStream())
-            {
                 stream.Write(data, 0, data.Length);
-            }
 
             var response = (HttpWebResponse)request.GetResponse();
             var rsStream = response.GetResponseStream();
