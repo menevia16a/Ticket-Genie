@@ -45,7 +45,7 @@ namespace Ticket_Genie
             using (var connection = _dbConnector.GetConnection())
             {
                 connection.Open();
-                var command = new MySqlCommand("SELECT id, type, playerGuid, name, description, closedBy, response, completed, viewed FROM gm_ticket WHERE id = @id", connection);
+                var command = new MySqlCommand("SELECT id, type, playerGuid, name, description, createTime, lastModifiedTime, closedBy, response, completed, viewed FROM gm_ticket WHERE id = @id", connection);
                 command.Parameters.AddWithValue("@id", id);
                 var reader = command.ExecuteReader();
 
@@ -59,10 +59,12 @@ namespace Ticket_Genie
                         int playerGuid = reader.GetInt32(2);
                         string name = reader.GetString(3);
                         string description = reader.GetString(4);
-                        int closedBy = reader.GetInt32(5);
-                        string response = reader.GetString(6);
-                        int completed = reader.GetInt32(7);
-                        int viewed = reader.GetInt32(8);
+                        int createTime = reader.GetInt32(5);
+                        int lastModifiedTime = reader.GetInt32(6);
+                        int closedBy = reader.GetInt32(7);
+                        string response = reader.GetString(8);
+                        int completed = reader.GetInt32(9);
+                        int viewed = reader.GetInt32(10);
 
                         reader.Close();
 
@@ -78,9 +80,12 @@ namespace Ticket_Genie
                             playerGUID = playerGuid,
                             name = name,
                             description = description,
+                            createTime = createTime,
+                            lastModifiedTime = lastModifiedTime,
                             closedBy = closedBy,
                             response = response,
-                            completed = completed
+                            completed = completed,
+                            viewed = viewed + 1
                         };
                     }
                 }

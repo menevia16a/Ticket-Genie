@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Ticket_Genie
@@ -41,7 +42,6 @@ namespace Ticket_Genie
                         Ticket listItem = new Ticket();
                         listItem.id = ticket.id;
                         listItem.name = ticket.name;
-                        listItem.closedBy = ticket.closedBy;
                         TicketList.Items.Add(listItem);
                     }
                 }
@@ -68,9 +68,17 @@ namespace Ticket_Genie
 
                 if (ticketDetails != null)
                 {
+                    // Convert Linux timestamp to readable date
+                    var creationTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.createTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    var lastModifiedTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.lastModifiedTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+
                     // update the UI ticket info
                     TicketID.Text = ticketDetails.id.ToString();
                     TicketName.Text = ticketDetails.name;
+                    PlayerGUID.Text = ticketDetails.playerGUID.ToString();
+                    ViewedCount.Text = ticketDetails.viewed.ToString();
+                    Creation.Text = creationTime;
+                    LastModified.Text = lastModifiedTime;
                     TicketDescription.Text = ticketDetails.description;
                     Properties.Settings.Default.CurrentTicketID = ticketDetails.id;
                     Properties.Settings.Default.Save();
@@ -111,7 +119,6 @@ namespace Ticket_Genie
                 Ticket listItem = new Ticket();
                 listItem.id = ticket.id;
                 listItem.name = ticket.name;
-                listItem.closedBy = ticket.closedBy;
                 TicketList.Items.Add(listItem);
             }
 
