@@ -123,6 +123,7 @@
     <Compile Include="ResponseWindow.xaml.cs">
       <DependentUpon>ResponseWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TCSOAPService.cs" />
     <Compile Include="Ticket.cs" />
     <Compile Include="TicketManager.cs" />
     <Page Include="AboutWindow.xaml">

@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="*" MinWidth="150"/>
                 <ColumnDefinition Width="*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
-            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name" Foreground="White"/>
+            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name" Foreground="CornflowerBlue"/>
             <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False" Grid.RowSpan="2" Foreground="CornflowerBlue">
                 <StackPanel Margin="5 5 0 5">
                     <TextBlock Text="Ticket ID:" FontWeight="Bold"/>
