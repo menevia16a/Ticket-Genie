@@ -27,12 +27,20 @@
             <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name" Foreground="CornflowerBlue"/>
             <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False" Grid.RowSpan="2" Foreground="CornflowerBlue">
                 <StackPanel Margin="5 5 0 5">
-                    <TextBlock Text="Ticket ID:" FontWeight="Bold"/>
-                    <TextBlock x:Name="TicketID"/>
-                    <TextBlock Text="Character Name:" FontWeight="Bold" Margin="0 5 0 0"/>
-                    <TextBlock x:Name="TicketName"/>
-                    <TextBlock Text="Ticket Description:" FontWeight="Bold" Margin="0 5 0 0"/>
-                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="394" Height="356"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Ticket ID:" FontWeight="Bold" Width="57"/>
+                    <TextBlock x:Name="TicketID" HorizontalAlignment="Left" Margin="60 -15 0 0" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Character Name:" FontWeight="Bold" Margin="0 5 0 0"/>
+                    <TextBlock x:Name="TicketName" HorizontalAlignment="Left" Margin="100 -15 0 0" Width="100"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Player GUID:" FontWeight="Bold"/>
+                    <TextBlock x:Name="PlayerGUID" HorizontalAlignment="Left" Margin="80 -15 0 0" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Viewed Count:" FontWeight="Bold"/>
+                    <TextBlock x:Name="ViewedCount" HorizontalAlignment="Left" Margin="90 -15 0 0" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Creation:" FontWeight="Bold" Width="54"/>
+                    <TextBlock x:Name="Creation" HorizontalAlignment="Left" Margin="60 -15 0 0" Width="100"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Last Modified:" FontWeight="Bold" Width="82"/>
+                    <TextBlock x:Name="LastModified" HorizontalAlignment="Left" Margin="85 -15 0 0" Width="90"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Ticket Description:" FontWeight="Bold"/>
+                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="394" Height="233"/>
                 </StackPanel>
             </ListView>
         </Grid>
