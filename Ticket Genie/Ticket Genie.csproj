@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Ticket_Genie</RootNamespace>
     <AssemblyName>Ticket Genie</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -26,11 +26,16 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <UpdateUrl>https://voidmaster.xyz/TicketGenie/</UpdateUrl>
+    <TargetCulture>en-US</TargetCulture>
+    <ProductName>Ticket Genie</ProductName>
+    <PublisherName>Veilbreaker Entertainment</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.0</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <ApplicationVersion>1.1.1.%2a</ApplicationVersion>
+    <UseApplicationTrust>true</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,10 +60,10 @@
     <ApplicationIcon>arabia.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>75F9657AF6342FD3632BCA4296CBA6A460D2427B</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C281A1AD935EC14390E403860A525D2F5E2B475C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Ticket Genie_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>VeilbreakerEntertainment.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -67,10 +72,13 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Veilbreaker Entertainment.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>VeilbreakerEntertainment.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
@@ -155,6 +163,10 @@
     <Compile Include="CharacterManagerWindow.xaml.cs">
       <DependentUpon>CharacterManagerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConnectionSettingsWindow.xaml.cs">
+      <DependentUpon>ConnectionSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JsonTools.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -169,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CharacterManagerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConnectionSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -217,8 +233,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Ticket Genie_TemporaryKey.pfx" />
-    <None Include="Veilbreaker Entertainment.snk" />
+    <None Include="VeilbreakerEntertainment.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -12,6 +12,6 @@
     <Grid>
         <TextBlock Text="Created by: Veil and Serithul" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,51,0,0" FontWeight="Bold"/>
         <TextBlock Text="This is a GM tool for reading and responding to tickets without the need to go in-game. Simply login with your GM username, and select a character to act as in the Character Manager." Margin="0,75,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="210" TextWrapping="Wrap"/>
-        <TextBlock Text="Version: 1.0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,27,0,0" FontWeight="Bold"/>
+        <TextBlock Text="Version: 1.0.1.0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,27,0,0" FontWeight="Bold"/>
     </Grid>
 </Window>
