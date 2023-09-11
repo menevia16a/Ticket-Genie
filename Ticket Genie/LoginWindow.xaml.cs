@@ -34,9 +34,7 @@ namespace Ticket_Genie
         private void UsernameTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
                 OnClickLogin(sender, e);
-            }
         }
 
         public bool GetLoginSuccess() { return loginSuccess; }

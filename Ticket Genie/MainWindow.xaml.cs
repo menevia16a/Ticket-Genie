@@ -37,9 +37,9 @@ namespace Ticket_Genie
 
             var loginWindow = new LoginWindow();
 
-            if (!loginWindow.GetLoginSuccess())
+            if (loginWindow.ShowDialog() == true)
             {
-                if (loginWindow.ShowDialog() == true)
+                if (loginWindow.GetLoginSuccess())
                 {
                     // Retrieve all tickets and display them on the UI
                     var tickets = _ticketManager.GetAllTickets();
@@ -57,10 +57,13 @@ namespace Ticket_Genie
                     }
 
                     MessageBox.Show("All of the current tickets have been loaded.", "Ticket List", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 }
                 else
                     Application.Current.Shutdown();
             }
+            else
+                Application.Current.Shutdown();
         }
 
         private void OnTicketSelected(object sender, RoutedEventArgs e)
