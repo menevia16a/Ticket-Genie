@@ -15,7 +15,17 @@ namespace Ticket_Genie
         public CharacterManagerWindow()
         {
             InitializeComponent();
-            _dbConnector = new DBConnector(Properties.Settings.Default.CharactersDB);
+
+            var connectionString = new MySqlConnectionStringBuilder
+            {
+                Server = Properties.Settings.Default.SQLHost,
+                Port = (uint)Properties.Settings.Default.SQLPort,
+                Database = Properties.Settings.Default.CharacterDB,
+                UserID = Properties.Settings.Default.SQLUsername,
+                Password = Properties.Settings.Default.SQLPassword
+            }.ToString();
+
+            _dbConnector = new DBConnector(connectionString);
             Loaded += CharacterManagerWindow_Loaded;
         }
 

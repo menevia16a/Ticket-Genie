@@ -35,23 +35,27 @@ namespace Ticket_Genie.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=***REMOVED***;Database=characters;Uid=***REMOVED***;Pwd=Mallokfirew" +
-            "ind98;Port=***REMOVED***;")]
-        public string CharactersDB {
+        [global::System.Configuration.DefaultSettingValueAttribute("characters")]
+        public string CharacterDB {
             get {
-                return ((string)(this["CharactersDB"]));
+                return ((string)(this["CharacterDB"]));
+            }
+            set {
+                this["CharacterDB"] = value;
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=***REMOVED***;Database=auth;Uid=***REMOVED***;Pwd=***REMOVED***;" +
-            "Port=***REMOVED***;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("auth")]
         public string AuthDB {
             get {
                 return ((string)(this["AuthDB"]));
+            }
+            set {
+                this["AuthDB"] = value;
             }
         }
         
@@ -79,39 +83,99 @@ namespace Ticket_Genie.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("***REMOVED***")]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
         public string SOAPHost {
             get {
                 return ((string)(this["SOAPHost"]));
             }
+            set {
+                this["SOAPHost"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("7878")]
         public int SOAPPort {
             get {
                 return ((int)(this["SOAPPort"]));
             }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("***REMOVED***")]
-        public string SOAPUser {
-            get {
-                return ((string)(this["SOAPUser"]));
+            set {
+                this["SOAPPort"] = value;
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("***REMOVED***")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SOAPUsername {
+            get {
+                return ((string)(this["SOAPUsername"]));
+            }
+            set {
+                this["SOAPUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SOAPPassword {
             get {
                 return ((string)(this["SOAPPassword"]));
+            }
+            set {
+                this["SOAPPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string SQLHost {
+            get {
+                return ((string)(this["SQLHost"]));
+            }
+            set {
+                this["SQLHost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3306")]
+        public int SQLPort {
+            get {
+                return ((int)(this["SQLPort"]));
+            }
+            set {
+                this["SQLPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SQLUsername {
+            get {
+                return ((string)(this["SQLUsername"]));
+            }
+            set {
+                this["SQLUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SQLPassword {
+            get {
+                return ((string)(this["SQLPassword"]));
+            }
+            set {
+                this["SQLPassword"] = value;
             }
         }
     }

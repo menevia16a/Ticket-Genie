@@ -5,11 +5,11 @@
     <Setting Name="AccountID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="CharactersDB" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Server=***REMOVED***;Database=characters;Uid=***REMOVED***;Pwd=***REMOVED***;Port=***REMOVED***;</Value>
+    <Setting Name="CharacterDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">characters</Value>
     </Setting>
-    <Setting Name="AuthDB" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Server=***REMOVED***;Database=auth;Uid=***REMOVED***;Pwd=***REMOVED***;Port=***REMOVED***;</Value>
+    <Setting Name="AuthDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">auth</Value>
     </Setting>
     <Setting Name="CharacterGUID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -17,17 +17,29 @@
     <Setting Name="CurrentTicketID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="SOAPHost" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">***REMOVED***</Value>
+    <Setting Name="SOAPHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="SOAPPort" Type="System.Int32" Scope="Application">
+    <Setting Name="SOAPPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">7878</Value>
     </Setting>
-    <Setting Name="SOAPUser" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">***REMOVED***</Value>
+    <Setting Name="SOAPUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SOAPPassword" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">***REMOVED***</Value>
+    <Setting Name="SOAPPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SQLHost" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="SQLPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3306</Value>
+    </Setting>
+    <Setting Name="SQLUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SQLPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

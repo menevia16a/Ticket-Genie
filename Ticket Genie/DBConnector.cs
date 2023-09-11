@@ -1,4 +1,6 @@
 using MySql.Data.MySqlClient;
+using System.Linq.Expressions;
+using System.Windows;
 
 public class DBConnector
 {
@@ -6,16 +8,17 @@ public class DBConnector
 
     public DBConnector(string connectionString)
     {
-        connection = new MySqlConnection(connectionString);
+        try
+        {
+            connection = new MySqlConnection(connectionString);
+        }
+        catch (MySqlException ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
-    public MySqlConnection GetConnection()
-    {
-        return connection;
-    }
+    public MySqlConnection GetConnection() { return connection; }
 
-    public void CloseConnection()
-    {
-        connection.Close();
-    }
+    public void CloseConnection() { connection.Close(); }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,17 +15,27 @@ namespace Ticket_Genie
         public MainWindow()
         {
             InitializeComponent();
+
+            var connectionSettingsWindow = new ConnectionSettingsWindow();
+
+            if (!File.Exists("SQLConnectionSettings.json") || !File.Exists("SOAPConnectionSettings.json"))
+                if (connectionSettingsWindow.ShowDialog() == true)
+                    JsonTools.CreateDefaultJsonFiles(); // Check if JSON files exist, if not then create them
+
             _ticketManager = new TicketManager();
             Loaded += MainWindow_Loaded;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var loginWindow = new LoginWindow();
             Properties.Settings.Default.AccountID = 0;
             Properties.Settings.Default.CharacterGUID = 0;
             Properties.Settings.Default.CurrentTicketID = 0;
             Properties.Settings.Default.Save();
+
+            JsonTools.UpdateConnectionSettings(); // Update application connection settings from JSON
+
+            var loginWindow = new LoginWindow();
 
             if (!loginWindow.GetLoginSuccess())
             {
@@ -38,19 +49,19 @@ namespace Ticket_Genie
 
                     foreach (var ticket in tickets)
                     {
-                        //Add the ticket to the left side list on the main window
+                        // Add the ticket to the left side list on the main window
                         Ticket listItem = new Ticket();
                         listItem.id = ticket.id;
                         listItem.name = ticket.name;
                         TicketList.Items.Add(listItem);
                     }
+
+                    MessageBox.Show("All of the current tickets have been loaded.", "Ticket List", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                     Application.Current.Shutdown();
             }
         }
-
-        private void OnExitClick(object sender, RoutedEventArgs e) { Application.Current.Shutdown(); }
 
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
@@ -58,6 +69,7 @@ namespace Ticket_Genie
             if (Properties.Settings.Default.CharacterGUID == 0)
             {
                 MessageBox.Show("Please select a character first.", "No Character Selected", MessageBoxButton.OK, MessageBoxImage.Error);
+                RefreshTicketList();
                 return;
             }
 
@@ -72,7 +84,7 @@ namespace Ticket_Genie
                     var creationTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.createTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
                     var lastModifiedTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.lastModifiedTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-                    // update the UI ticket info
+                    // Update the UI ticket info
                     TicketID.Text = ticketDetails.id.ToString();
                     TicketName.Text = ticketDetails.name;
                     PlayerGUID.Text = ticketDetails.playerGUID.ToString();
@@ -114,6 +126,13 @@ namespace Ticket_Genie
             // Open the Character Manager window to select a character
             var characterManager = new CharacterManagerWindow();
             characterManager.ShowDialog();
+        }
+
+        private void OnConnectionSettingsClick(object sender, RoutedEventArgs e)
+        {
+            // Open the Connection Settings window to select a character
+            var connectionSettings = new ConnectionSettingsWindow();
+            connectionSettings.ShowDialog();
         }
 
         private void OnAboutClick(object sender, RoutedEventArgs e)
