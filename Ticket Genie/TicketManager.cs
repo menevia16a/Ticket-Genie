@@ -27,7 +27,7 @@ namespace Ticket_Genie
         // Reloads the GM tickets in-game
         public void UpdateTickets()
         {
-            if (_tcSoapService.Call("reload gm_ticket") == string.Empty)
+            if (_tcSoapService.Call("reload gm_ticket")?.Length == 0)
                 MessageBox.Show("Error executing SOAP command.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 

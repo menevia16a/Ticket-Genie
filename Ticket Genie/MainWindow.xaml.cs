@@ -69,12 +69,16 @@ namespace Ticket_Genie
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
             // Check if a character has been selected, if not then send a message
-            if (Properties.Settings.Default.CharacterGUID == 0)
+            if (Properties.Settings.Default.CharacterGUID == 0 && TicketList.SelectedIndex != -1)
             {
+                Properties.Settings.Default.CurrentTicketID = 0;
+                Properties.Settings.Default.Save();
+                TicketList.SelectedIndex = -1;
                 MessageBox.Show("Please select a character first.", "No Character Selected", MessageBoxButton.OK, MessageBoxImage.Error);
-                RefreshTicketList();
                 return;
             }
+            else if (TicketList.SelectedIndex == -1)
+                return;
 
             // Retrieve selected ticket
             if (sender is ListBox listBox && listBox.SelectedItem is Ticket selectedTicket)
@@ -190,8 +194,17 @@ namespace Ticket_Genie
 
         private void OnAccountToolsClick(object sender, RoutedEventArgs e)
         {
-            // TODO: Implement dashboard for account tools
-            MessageBox.Show("This feature is not yet implemented.", "Account Tools", MessageBoxButton.OK, MessageBoxImage.Information);
+            var ticketID = Properties.Settings.Default.CurrentTicketID;
+            var accountToolsWindow = new AccountToolsWindow(0);
+
+            // Pass player GUID and Name to the account tools window if a ticket is selected
+            if (ticketID != 0)
+            {
+                Ticket ticket = _ticketManager.GetTicket(ticketID);
+                accountToolsWindow = new AccountToolsWindow(ticket.playerGUID, ticket.name);
+            }
+
+            accountToolsWindow.ShowDialog();
         }
     }
 }
