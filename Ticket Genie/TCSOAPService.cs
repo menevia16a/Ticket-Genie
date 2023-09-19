@@ -70,5 +70,16 @@ namespace Ticket_Genie
 
             return node.InnerText;
         }
+
+        public bool ExecuteSOAPCommand(string command)
+        {
+            if (Call(command)?.Length == 0)
+            {
+                MessageBox.Show("Error executing SOAP command.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            return true;
+        }
     }
 }

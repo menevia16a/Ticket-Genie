@@ -8,7 +8,7 @@
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
         Title="Ticket Genie" Height="600" Width="860"
-        WindowStyle="ToolWindow">
+        WindowStyle="ToolWindow" Closing="MainWindow_Closing">
     <Grid Height="572" VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

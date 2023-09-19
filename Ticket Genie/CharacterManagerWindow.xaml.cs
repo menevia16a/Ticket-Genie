@@ -33,22 +33,34 @@ namespace Ticket_Genie
         {
             using (var connection = _dbConnector.GetConnection())
             {
-                connection.Open();
-                var command = new MySqlCommand("SELECT guid, name FROM characters WHERE account = @id", connection);
-                command.Parameters.AddWithValue("@id", accountId);
-                var reader = command.ExecuteReader();
-                var characters = new List<Character>();
-                while (reader.Read())
+                try
                 {
-                    var character = new Character
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT guid, name FROM characters WHERE account = @id", connection);
+                    command.Parameters.AddWithValue("@id", accountId);
+                    var reader = command.ExecuteReader();
+                    var characters = new List<Character>();
+
+                    while (reader.Read())
                     {
-                        charGuid = reader.GetInt32(0),
-                        name = reader.GetString(1)
-                    };
-                    characters.Add(character);
+                        var character = new Character
+                        {
+                            charGuid = reader.GetInt32(0),
+                            name = reader.GetString(1)
+                        };
+                        characters.Add(character);
+                    }
+
+                    CharactersList.ItemsSource = characters;
+
+                    _dbConnector.CloseConnection(reader);
+                    return characters;
                 }
-                CharactersList.ItemsSource = characters;
-                return characters;
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return null;
+                }
             }
         }
 

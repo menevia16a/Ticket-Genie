@@ -27,7 +27,7 @@ namespace Ticket_Genie
         // Reloads the GM tickets in-game
         public void UpdateTickets()
         {
-            if (_tcSoapService.Call("reload gm_ticket")?.Length == 0)
+            if (_tcSoapService.ExecuteSOAPCommand("reload gm_ticket"))
                 MessageBox.Show("Error executing SOAP command.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
@@ -44,6 +44,8 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
+
+                    _dbConnector.CloseConnection();
                 }
                 catch (MySqlException ex)
                 {
@@ -64,6 +66,8 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
+
+                    _dbConnector.CloseConnection();
                 }
                 catch (MySqlException ex)
                 {
@@ -84,6 +88,8 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
+
+                    _dbConnector.CloseConnection();
                 }
                 catch (MySqlException ex)
                 {
@@ -126,6 +132,8 @@ namespace Ticket_Genie
                             command2.Parameters.AddWithValue("@viewedCount", viewed + 1);
                             command2.Parameters.AddWithValue("@id", id);
                             command2.ExecuteNonQuery();
+
+                            _dbConnector.CloseConnection(reader);
 
                             return new Ticket
                             {
@@ -179,6 +187,8 @@ namespace Ticket_Genie
                             });
                         }
                     }
+
+                    _dbConnector.CloseConnection(reader);
 
                     return tickets;
                 }

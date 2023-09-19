@@ -173,6 +173,7 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PortLocation.cs" />
     <Compile Include="ResponseWindow.xaml.cs">
       <DependentUpon>ResponseWindow.xaml</DependentUpon>
     </Compile>

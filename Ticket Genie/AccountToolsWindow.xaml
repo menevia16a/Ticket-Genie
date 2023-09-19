@@ -7,9 +7,57 @@
         mc:Ignorable="d"
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
-        Title="AccountToolsWindow" Height="450" Width="800"
+        Title="Account Tools" Height="380" Width="650"
         WindowStyle="ToolWindow">
     <Grid>
-        
+        <!-- Banning options -->
+        <StackPanel Orientation="Vertical" Margin="10,10,0,0" HorizontalAlignment="Left" Width="219" Height="149" VerticalAlignment="Top">
+            <TextBlock Text="Ban Account:" HorizontalAlignment="Center" Margin="0,0,0,5" />
+            <StackPanel Orientation="Vertical" Width="156" HorizontalAlignment="Center">
+                <TextBlock Text="Reason:" HorizontalAlignment="Center"/>
+                <TextBox x:Name="ReasonTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
+                <TextBlock Text="Duration:" HorizontalAlignment="Center"/>
+                <TextBox x:Name="DurationTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
+            </StackPanel>
+            <Button x:Name="BanButton" Content="Ban" Width="49" Background="#6495ED" Foreground="White" Click="OnBanClick"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="15,146,0,0" HorizontalAlignment="Left" Width="219" Height="94" VerticalAlignment="Top">
+            <TextBlock Text="Unban Account:" HorizontalAlignment="Center" Margin="0,0,0,5" />
+            <StackPanel Orientation="Vertical" Width="156" HorizontalAlignment="Center">
+                <TextBlock Text="Player Name:" HorizontalAlignment="Center"/>
+                <TextBox x:Name="PlayerNameTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
+            </StackPanel>
+            <Button x:Name="UnbanButton" Content="Unban" Width="49" Background="#6495ED" Foreground="White" Click="OnUnbanClick"/>
+        </StackPanel>
+
+        <!-- Porting options -->
+        <StackPanel Orientation="Vertical" Margin="22,240,422,0">
+            <TextBlock Text="Port to:" Margin="5" Height="19" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="PortComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
+                <ComboBoxItem x:Name="PortComboBoxItem1" Content=""/>
+                <ComboBoxItem x:Name="PortComboBoxItem2" Content=""/>
+                <ComboBoxItem x:Name="PortComboBoxItem3" Content=""/>
+                <ComboBoxItem x:Name="PortComboBoxItem4" Content=""/>
+            </ComboBox>
+            <Button x:Name="PortButton" Content="Port" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White" Click="OnPortClick"/>
+        </StackPanel>
+
+        <!-- Mail options -->
+        <StackPanel Orientation="Vertical" Margin="234,10,26,0">
+            <TextBlock Text="Send Mail:" HorizontalAlignment="Center" Margin="0,0,0,5" />
+            <StackPanel Orientation="Vertical" Height="274" Width="386">
+                <TextBlock Text="Subject:" HorizontalAlignment="Center"/>
+                <TextBox x:Name="SubjectTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
+                <TextBlock Text="Message:" HorizontalAlignment="Center"/>
+                <TextBox x:Name="MessageTextBox" Width="294" Margin="5" Height="150" MaxHeight="160" Background="#FF58607B" Foreground="CornflowerBlue" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                <TextBlock Text="Items:" Margin="5" Height="14" Width="36"/>
+                <StackPanel Orientation="Horizontal" Width="190">
+                    <TextBox x:Name="ItemIdTextBox1" Width="50" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
+                    <TextBox x:Name="ItemIdTextBox2" Width="50" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
+                    <TextBox x:Name="ItemIdTextBox3" Width="50" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
+                </StackPanel>
+            </StackPanel>
+            <Button x:Name="MailButton" Content="Send" Width="70" Background="#6495ED" Foreground="White" Height="25" Click="OnMailClick"/>
+        </StackPanel>
     </Grid>
 </Window>

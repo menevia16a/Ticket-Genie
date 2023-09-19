@@ -1,5 +1,4 @@
 using MySql.Data.MySqlClient;
-using System.Linq.Expressions;
 using System.Windows;
 
 public class DBConnector
@@ -20,5 +19,11 @@ public class DBConnector
 
     public MySqlConnection GetConnection() { return connection; }
 
-    public void CloseConnection() { connection.Close(); }
+    public void CloseConnection(MySqlDataReader reader = null)
+    {
+        if (reader != null && !reader.IsClosed)
+            reader.Close();
+
+        connection.Close();
+    }
 }

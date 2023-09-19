@@ -66,6 +66,11 @@ namespace Ticket_Genie
                 Application.Current.Shutdown();
         }
 
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.Shutdown(); // Terminate the process on window close
+        }
+
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
             // Check if a character has been selected, if not then send a message
