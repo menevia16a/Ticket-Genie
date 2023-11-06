@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
+using Essy.Tools.InputBox;
 using MySql.Data.MySqlClient;
 
 namespace Ticket_Genie
@@ -62,9 +63,6 @@ namespace Ticket_Genie
         {
             InitializeComponent();
 
-            playerGUID = ticketCharacterGUID;
-            playerName = ticketPlayerName;
-
             var charactersConnectionString = new MySqlConnectionStringBuilder
             {
                 Server = Properties.Settings.Default.SQLHost,
@@ -86,79 +84,99 @@ namespace Ticket_Genie
             _tcSoapService = new TCSOAPService();
             _dbConnectorCharacters = new DBConnector(charactersConnectionString);
             _dbConnectorWorld = new DBConnector(worldConnectionString);
+
+            if (ticketCharacterGUID == 0)
+            {
+                MessageBox.Show("No player was selected, you will be prompted to specify a player's name.", "No Player Detected", MessageBoxButton.OK, MessageBoxImage.Information);
+                Properties.Settings.Default.SpecifiedPlayerName = InputBox.ShowInputBox("Please enter a player's name", false);
+
+                if (string.IsNullOrEmpty(Properties.Settings.Default.SpecifiedPlayerName))
+                    InvalidPlayer();
+                else
+                {
+                    // Verify name given is actually a player
+                    using (var connection = _dbConnectorCharacters.GetConnection())
+                    {
+                        try
+                        {
+                            connection.Open();
+                            var command = new MySqlCommand("SELECT guid, name FROM characters WHERE name = @name LIMIT 1", connection);
+                            command.Parameters.AddWithValue("@name", Properties.Settings.Default.SpecifiedPlayerName);
+                            var reader = command.ExecuteReader();
+
+                            if (reader.Read() && reader.HasRows)
+                            {
+                                playerGUID = reader.GetInt32(0);
+                                playerName = reader.GetString(1);
+                            }
+
+                            _dbConnectorCharacters.CloseConnection(reader);
+
+                            if (playerGUID == 0)
+                                InvalidPlayer();
+                        }
+                        catch (MySqlException ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                playerGUID = ticketCharacterGUID;
+                playerName = ticketPlayerName;
+            }
+
             Loaded += AccountToolsWindow_Loaded;
         }
 
         private void AccountToolsWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Check if playerGUID is valid, if not then disable all TextBoxes except unbanning
-            if (playerGUID == 0)
+            // Get the player's faction and store it
+            using (var connection = _dbConnectorCharacters.GetConnection())
             {
-                ReasonTextBox.IsEnabled = false;
-                DurationTextBox.IsEnabled = false;
-                SubjectTextBox.IsEnabled = false;
-                MessageTextBox.IsEnabled = false;
-                ItemIdTextBox1.IsEnabled = false;
-                ItemAmountTextBox1.IsEnabled = false;
-                ItemIdTextBox2.IsEnabled = false;
-                ItemAmountTextBox2.IsEnabled = false;
-                ItemIdTextBox3.IsEnabled = false;
-                ItemAmountTextBox3.IsEnabled = false;
-                ItemIdTextBox4.IsEnabled = false;
-                ItemAmountTextBox4.IsEnabled = false;
-                ItemIdTextBox5.IsEnabled = false;
-                ItemAmountTextBox5.IsEnabled = false;
-                ItemIdTextBox6.IsEnabled = false;
-                ItemAmountTextBox6.IsEnabled = false;
-                PortComboBox.IsEnabled = false;
-            }
-            else
-            {
-                // Get the player's faction and store it
-                using (var connection = _dbConnectorCharacters.GetConnection())
+                try
                 {
-                    try
-                    {
-                        connection.Open();
-                        var command = new MySqlCommand("SELECT race FROM characters WHERE guid = @guid LIMIT 1", connection);
-                        command.Parameters.AddWithValue("@guid", playerGUID);
-                        var reader = command.ExecuteReader();
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT race FROM characters WHERE guid = @guid LIMIT 1", connection);
+                    command.Parameters.AddWithValue("@guid", playerGUID);
+                    var reader = command.ExecuteReader();
 
-                        if (reader.Read())
+                    if (reader.Read())
+                    {
+                        // Check if the player is Alliance or Horde by their race id
+                        int playerRace = reader.GetInt16(0);
+                        playerFaction = GetPlayerFaction(playerRace);
+
+                        if (playerFaction == PlayerFaction.Invalid)
                         {
-                            // Check if the player is Alliance or Horde by their race id
-                            int playerRace = reader.GetInt16(0);
-                            playerFaction = GetPlayerFaction(playerRace);
-
-                            if (playerFaction == PlayerFaction.Invalid)
-                            {
-                                MessageBox.Show("Invalid player faction.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                return;
-                            }
-                            else if (playerFaction == PlayerFaction.Alliance)
-                            {
-                                // Set the available porting cities to Alliance cities
-                                PortComboBoxItem1.Content = alliancePortLocations.ElementAt(0).Key;
-                                PortComboBoxItem2.Content = alliancePortLocations.ElementAt(1).Key;
-                                PortComboBoxItem3.Content = alliancePortLocations.ElementAt(2).Key;
-                                PortComboBoxItem4.Content = alliancePortLocations.ElementAt(3).Key;
-                            }
-                            else if (playerFaction == PlayerFaction.Horde)
-                            {
-                                // Set the available porting cities to Horde cities
-                                PortComboBoxItem1.Content = hordePortLocations.ElementAt(0).Key;
-                                PortComboBoxItem2.Content = hordePortLocations.ElementAt(1).Key;
-                                PortComboBoxItem3.Content = hordePortLocations.ElementAt(2).Key;
-                                PortComboBoxItem4.Content = hordePortLocations.ElementAt(3).Key;
-                            }
+                            MessageBox.Show("Invalid player faction.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
                         }
+                        else if (playerFaction == PlayerFaction.Alliance)
+                        {
+                            // Set the available porting cities to Alliance cities
+                            PortComboBoxItem1.Content = alliancePortLocations.ElementAt(0).Key;
+                            PortComboBoxItem2.Content = alliancePortLocations.ElementAt(1).Key;
+                            PortComboBoxItem3.Content = alliancePortLocations.ElementAt(2).Key;
+                            PortComboBoxItem4.Content = alliancePortLocations.ElementAt(3).Key;
+                        }
+                        else if (playerFaction == PlayerFaction.Horde)
+                        {
+                            // Set the available porting cities to Horde cities
+                            PortComboBoxItem1.Content = hordePortLocations.ElementAt(0).Key;
+                            PortComboBoxItem2.Content = hordePortLocations.ElementAt(1).Key;
+                            PortComboBoxItem3.Content = hordePortLocations.ElementAt(2).Key;
+                            PortComboBoxItem4.Content = hordePortLocations.ElementAt(3).Key;
+                        }
+                    }
 
-                        _dbConnectorCharacters.CloseConnection(reader);
-                    }
-                    catch (MySqlException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    _dbConnectorCharacters.CloseConnection(reader);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -190,9 +208,6 @@ namespace Ticket_Genie
 
         private void OnUnbanClick(object sender, RoutedEventArgs e)
         {
-            if (PlayerNameTextBox.Text == string.Empty)
-                return;
-
             // Unban player account
             if (_tcSoapService.ExecuteSOAPCommand($"unban playeraccount {playerName}"))
                 MessageBox.Show($"Player {playerName}'s account has been unbanned.", "Account Unbanned", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -236,7 +251,7 @@ namespace Ticket_Genie
             // Get the selected port location
             string portName = PortComboBox.Text;
 
-            if (portName == string.Empty)
+            if (portName?.Length == 0)
             {
                 MessageBox.Show("Please select a port location.", "Porting Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -296,7 +311,7 @@ namespace Ticket_Genie
                 return;
 
             // Verify fields have been filled
-            if (SubjectTextBox.Text == string.Empty || MessageTextBox.Text == string.Empty)
+            if (SubjectTextBox.Text?.Length == 0 || MessageTextBox.Text?.Length == 0)
             {
                 MessageBox.Show("Both the subject and the message are required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -437,6 +452,12 @@ namespace Ticket_Genie
                 if (_tcSoapService.ExecuteSOAPCommand($"send mail {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\""))
                     MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private void InvalidPlayer()
+        {
+            MessageBox.Show("Could not find a player associated with that name, the Account Tools window will now close.", "No Player Found", MessageBoxButton.OK, MessageBoxImage.Error);
+            Close();
         }
 
         private PlayerFaction GetPlayerFaction(int playerRace)

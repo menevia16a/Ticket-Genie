@@ -190,5 +190,17 @@ namespace Ticket_Genie.Properties {
                 this["WorldDB"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SpecifiedPlayerName {
+            get {
+                return ((string)(this["SpecifiedPlayerName"]));
+            }
+            set {
+                this["SpecifiedPlayerName"] = value;
+            }
+        }
     }
 }

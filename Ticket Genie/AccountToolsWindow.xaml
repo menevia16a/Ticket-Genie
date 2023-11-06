@@ -21,17 +21,13 @@
             </StackPanel>
             <Button x:Name="BanButton" Content="Ban" Width="49" Background="#6495ED" Foreground="White" Click="OnBanClick"/>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Margin="16,159,0,0" HorizontalAlignment="Left" Width="218" Height="94" VerticalAlignment="Top">
-            <TextBlock Text="Unban Account:" HorizontalAlignment="Center" Margin="0,0,0,5" />
-            <StackPanel Orientation="Vertical" Width="156" HorizontalAlignment="Center">
-                <TextBlock Text="Player Name:" HorizontalAlignment="Center"/>
-                <TextBox x:Name="PlayerNameTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
-            </StackPanel>
+        <StackPanel Orientation="Vertical" Margin="87,144,0,0" HorizontalAlignment="Left" Width="65" Height="25" VerticalAlignment="Top">
+
             <Button x:Name="UnbanButton" Content="Unban" Width="49" Background="#6495ED" Foreground="White" Click="OnUnbanClick"/>
         </StackPanel>
 
         <!-- Porting options -->
-        <StackPanel Orientation="Vertical" Margin="23,253,421,61">
+        <StackPanel Orientation="Vertical" Margin="16,174,428,140">
             <TextBlock Text="Port to:" Margin="5" Height="19" HorizontalAlignment="Center"/>
             <ComboBox x:Name="PortComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
                 <ComboBoxItem x:Name="PortComboBoxItem1" Content=""/>
