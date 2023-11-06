@@ -25,10 +25,7 @@ namespace Ticket_Genie
         }
 
         // Reloads the GM tickets in-game
-        public void UpdateTickets()
-        {
-            _tcSoapService.ExecuteSOAPCommand("reload gm_ticket");
-        }
+        public void UpdateTickets() { _tcSoapService.ExecuteSOAPCommand("reload gm_tickets"); }
 
         public void AppendResponse(int ticketID, string response)
         {

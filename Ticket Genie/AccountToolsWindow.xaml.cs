@@ -55,7 +55,8 @@ namespace Ticket_Genie
         private static int playerGUID;
         private static string playerName;
         private readonly TCSOAPService _tcSoapService;
-        private readonly DBConnector _dbConnector;
+        private readonly DBConnector _dbConnectorCharacters;
+        private readonly DBConnector _dbConnectorWorld;
 
         public AccountToolsWindow(int ticketCharacterGUID, string ticketPlayerName = "")
         {
@@ -64,7 +65,7 @@ namespace Ticket_Genie
             playerGUID = ticketCharacterGUID;
             playerName = ticketPlayerName;
 
-            var connectionString = new MySqlConnectionStringBuilder
+            var charactersConnectionString = new MySqlConnectionStringBuilder
             {
                 Server = Properties.Settings.Default.SQLHost,
                 Port = (uint)Properties.Settings.Default.SQLPort,
@@ -73,8 +74,18 @@ namespace Ticket_Genie
                 Password = Properties.Settings.Default.SQLPassword
             }.ToString();
 
-            _dbConnector = new DBConnector(connectionString);
+            var worldConnectionString = new MySqlConnectionStringBuilder
+            {
+                Server = Properties.Settings.Default.SQLHost,
+                Port = (uint)Properties.Settings.Default.SQLPort,
+                Database = Properties.Settings.Default.WorldDB,
+                UserID = Properties.Settings.Default.SQLUsername,
+                Password = Properties.Settings.Default.SQLPassword
+            }.ToString();
+
             _tcSoapService = new TCSOAPService();
+            _dbConnectorCharacters = new DBConnector(charactersConnectionString);
+            _dbConnectorWorld = new DBConnector(worldConnectionString);
             Loaded += AccountToolsWindow_Loaded;
         }
 
@@ -88,14 +99,23 @@ namespace Ticket_Genie
                 SubjectTextBox.IsEnabled = false;
                 MessageTextBox.IsEnabled = false;
                 ItemIdTextBox1.IsEnabled = false;
+                ItemAmountTextBox1.IsEnabled = false;
                 ItemIdTextBox2.IsEnabled = false;
+                ItemAmountTextBox2.IsEnabled = false;
                 ItemIdTextBox3.IsEnabled = false;
+                ItemAmountTextBox3.IsEnabled = false;
+                ItemIdTextBox4.IsEnabled = false;
+                ItemAmountTextBox4.IsEnabled = false;
+                ItemIdTextBox5.IsEnabled = false;
+                ItemAmountTextBox5.IsEnabled = false;
+                ItemIdTextBox6.IsEnabled = false;
+                ItemAmountTextBox6.IsEnabled = false;
                 PortComboBox.IsEnabled = false;
             }
             else
             {
                 // Get the player's faction and store it
-                using (var connection = _dbConnector.GetConnection())
+                using (var connection = _dbConnectorCharacters.GetConnection())
                 {
                     try
                     {
@@ -108,7 +128,7 @@ namespace Ticket_Genie
                         {
                             // Check if the player is Alliance or Horde by their race id
                             int playerRace = reader.GetInt16(0);
-                            playerFaction = (PlayerFaction)GetPlayerFaction(playerRace);
+                            playerFaction = GetPlayerFaction(playerRace);
 
                             if (playerFaction == PlayerFaction.Invalid)
                             {
@@ -133,7 +153,7 @@ namespace Ticket_Genie
                             }
                         }
 
-                        _dbConnector.CloseConnection(reader);
+                        _dbConnectorCharacters.CloseConnection(reader);
                     }
                     catch (MySqlException ex)
                     {
@@ -184,7 +204,7 @@ namespace Ticket_Genie
                 return;
 
             // Check if player is logged in
-            using (var connection = _dbConnector.GetConnection())
+            using (var connection = _dbConnectorCharacters.GetConnection())
             {
                 try
                 {
@@ -205,7 +225,7 @@ namespace Ticket_Genie
                         }
                     }
 
-                    _dbConnector.CloseConnection(reader);
+                    _dbConnectorCharacters.CloseConnection(reader);
                 }
                 catch (MySqlException ex)
                 {
@@ -245,7 +265,7 @@ namespace Ticket_Genie
             }
 
             // Port the player to the selected location
-            using (var connection = _dbConnector.GetConnection())
+            using (var connection = _dbConnectorCharacters.GetConnection())
             {
                 try
                 {
@@ -259,7 +279,7 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@guid", playerGUID);
                     command.ExecuteNonQuery();
 
-                    _dbConnector.CloseConnection();
+                    _dbConnectorCharacters.CloseConnection();
 
                     MessageBox.Show($"Player {playerName} has been ported to {portName}.", "Port Successful", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -283,55 +303,134 @@ namespace Ticket_Genie
             }
 
             // Check ItemIdTextBoxes for item ids
+            int amountOfItems = 0;
+            int invalidItems = 0;
             int itemID1 = 0;
             int itemID2 = 0;
             int itemID3 = 0;
-            int itemCount = 0;
+            int itemID4 = 0;
+            int itemID5 = 0;
+            int itemID6 = 0;
+            int itemCount1 = 0;
+            int itemCount2 = 0;
+            int itemCount3 = 0;
+            int itemCount4 = 0;
+            int itemCount5 = 0;
+            int itemCount6 = 0;
 
+            // Parse item ids
             if (ItemIdTextBox1.Text != string.Empty)
                 int.TryParse(ItemIdTextBox1.Text, out itemID1);
             if (ItemIdTextBox2.Text != string.Empty)
                 int.TryParse(ItemIdTextBox2.Text, out itemID2);
             if (ItemIdTextBox3.Text != string.Empty)
                 int.TryParse(ItemIdTextBox3.Text, out itemID3);
+            if (ItemIdTextBox4.Text != string.Empty)
+                int.TryParse(ItemIdTextBox4.Text, out itemID4);
+            if (ItemIdTextBox5.Text != string.Empty)
+                int.TryParse(ItemIdTextBox5.Text, out itemID5);
+            if (ItemIdTextBox6.Text != string.Empty)
+                int.TryParse(ItemIdTextBox6.Text, out itemID6);
 
-            for (int i = 0; i <= 2; i++)
+            // Parse the amount of each item
+            if (ItemAmountTextBox1.Text != string.Empty)
+                int.TryParse(ItemAmountTextBox1.Text, out itemCount1);
+            if (ItemAmountTextBox2.Text != string.Empty)
+                int.TryParse(ItemAmountTextBox2.Text, out itemCount2);
+            if (ItemAmountTextBox3.Text != string.Empty)
+                int.TryParse(ItemAmountTextBox3.Text, out itemCount3);
+            if (ItemAmountTextBox4.Text != string.Empty)
+                int.TryParse(ItemAmountTextBox4.Text, out itemCount4);
+            if (ItemAmountTextBox5.Text != string.Empty)
+                int.TryParse(ItemAmountTextBox5.Text, out itemCount5);
+            if (ItemAmountTextBox6.Text != string.Empty)
+                int.TryParse(ItemAmountTextBox6.Text, out itemCount6);
+
+            // Validate items
+            for (int i = 0; i < 6; i++)
             {
-                if (i == 0 && itemID1 != 0)
+                switch (i)
                 {
-                    itemCount++;
-                    break;
-                }
-                else if (i == 1 && itemID2 != 0)
-                {
-                    itemCount++;
-                    break;
-                }
-                else if (i == 2 && itemID3 != 0)
-                {
-                    itemCount++;
-                    break;
+                    case 0:
+                        if (itemID1 > 0)
+                            if (IsValidItem(itemID1) && IsAmountPossible(itemID1, itemCount1))
+                                amountOfItems++;
+                            else
+                                invalidItems++;
+                        break;
+                    case 1:
+                        if (itemID2 > 0)
+                            if (IsValidItem(itemID2) && IsAmountPossible(itemID2, itemCount2))
+                                amountOfItems++;
+                            else
+                                invalidItems++;
+                        break;
+                    case 2:
+                        if (itemID3 > 0)
+                            if (IsValidItem(itemID3) && IsAmountPossible(itemID3, itemCount3))
+                                amountOfItems++;
+                            else
+                                invalidItems++;
+                        break;
+                    case 3:
+                        if (itemID4 > 0)
+                            if (IsValidItem(itemID4) && IsAmountPossible(itemID4, itemCount4))
+                                amountOfItems++;
+                            else
+                                invalidItems++;
+                        break;
+                    case 4:
+                        if (itemID5 > 0)
+                            if (IsValidItem(itemID5) && IsAmountPossible(itemID1, itemCount5))
+                                amountOfItems++;
+                            else
+                                invalidItems++;
+                        break;
+                    case 5:
+                        if (itemID6 > 0)
+                            if (IsValidItem(itemID6) && IsAmountPossible(itemID6, itemCount6))
+                                amountOfItems++;
+                            else
+                                invalidItems++;
+                        break;
                 }
             }
 
             // Send mail to the player, including items if there are any
-            if (itemCount != 0)
+            if (amountOfItems != 0 && invalidItems == 0)
             {
-                switch (itemCount)
+                switch (amountOfItems)
                 {
                     case 1:
-                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:1"))
-                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItem: {itemID1}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:{itemCount1}"))
+                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItem: {itemID1}:{itemCount1}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
                         break;
                     case 2:
-                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:1 {itemID2}:1"))
-                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItems: {itemID1}, {itemID2}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:{itemCount1} {itemID2}:{itemCount2}"))
+                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItems: {itemID1}:{itemCount1}, {itemID2}:{itemCount2}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
                         break;
                     case 3:
-                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:1 {itemID2}:1 {itemID3}:1"))
-                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItems: {itemID1}, {itemID2}, {itemID3}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:{itemCount1} {itemID2}:{itemCount2} {itemID3}:{itemCount3}"))
+                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItems: {itemID1}:{itemCount1}, {itemID2}:{itemCount2}, {itemID3}:{itemCount3}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                    case 4:
+                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:{itemCount1} {itemID2}:{itemCount2} {itemID3}:{itemCount3} {itemID4}:{itemCount4}"))
+                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItems: {itemID1}:{itemCount1}, {itemID2}:{itemCount2}, {itemID3}:{itemCount3}, {itemID4}:{itemCount4}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                    case 5:
+                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:{itemCount1} {itemID2}:{itemCount2} {itemID3}:{itemCount3} {itemID4}:{itemCount4} {itemID5}:{itemCount5}"))
+                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItems: {itemID1}:{itemCount1}, {itemID2}:{itemCount2}, {itemID3}:{itemCount3}, {itemID4}:{itemCount4}, {itemID5}:{itemCount5}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                    case 6:
+                        if (_tcSoapService.ExecuteSOAPCommand($"send items {playerName} \"{SubjectTextBox.Text}\" \"{MessageTextBox.Text}\" {itemID1}:{itemCount1} {itemID2}:{itemCount2} {itemID3}:{itemCount3} {itemID4}:{itemCount4} {itemID5}:{itemCount5} {itemID6}:{itemCount6}"))
+                            MessageBox.Show($"Mail has been sent to {playerName}.\r\nSubject: {SubjectTextBox.Text}\r\nMessage: {MessageTextBox.Text}\r\nItems: {itemID1}:{itemCount1}, {itemID2}:{itemCount2}, {itemID3}:{itemCount3}, {itemID4}:{itemCount4}, {itemID5}:{itemCount5}, {itemID6}:{itemCount6}", "Mail Sent", MessageBoxButton.OK, MessageBoxImage.Information);
                         break;
                 }
+            }
+            else if (invalidItems > 0)
+            {
+                MessageBox.Show($"One or more of the items listed are invalid.", "Mail Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
             else
             {
@@ -346,6 +445,79 @@ namespace Ticket_Genie
                 return faction;
 
             return PlayerFaction.Invalid;
+        }
+
+        private static bool IsTextNumeric(string text)
+        {
+            Regex reg = new Regex("[^0-9]");
+            return reg.IsMatch(text);
+        }
+
+        private void NumericInputOnly(object sender, System.Windows.Input.TextCompositionEventArgs e) { e.Handled = IsTextNumeric(e.Text); }
+
+        // Make sure the item id exists in the database
+        private bool IsValidItem(int itemID)
+        {
+            bool hasRows = false;
+
+            using (var connection = _dbConnectorWorld.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT * FROM item_template WHERE entry = @itemID LIMIT 1", connection);
+                    command.Parameters.AddWithValue("@itemID", itemID);
+                    var reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                        hasRows = reader.HasRows;
+
+                    _dbConnectorWorld.CloseConnection(reader);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            return hasRows;
+        }
+
+        // Verify item count
+        private bool IsAmountPossible(int itemID, int itemCount)
+        {
+            int maxCount = 0;
+            int maxStackSize = 0;
+
+            using (var connection = _dbConnectorWorld.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT maxcount, stackable FROM item_template WHERE entry = @itemID LIMIT 1", connection);
+                    command.Parameters.AddWithValue("@itemID", itemID);
+                    var reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        maxCount = reader.GetInt32(0);
+                        maxStackSize = reader.GetInt32(1);
+                    }
+
+                    _dbConnectorWorld.CloseConnection(reader);
+
+                    if (maxCount == 0 && maxStackSize >= itemCount)
+                        return true;
+                    else if (maxCount <= itemCount && maxStackSize >= itemCount)
+                        return true;
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            return false;
         }
     }
 }

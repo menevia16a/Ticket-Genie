@@ -41,5 +41,8 @@
     <Setting Name="SQLPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="WorldDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">world</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

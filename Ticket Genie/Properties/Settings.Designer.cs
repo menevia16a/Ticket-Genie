@@ -178,5 +178,17 @@ namespace Ticket_Genie.Properties {
                 this["SQLPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("world")]
+        public string WorldDB {
+            get {
+                return ((string)(this["WorldDB"]));
+            }
+            set {
+                this["WorldDB"] = value;
+            }
+        }
     }
 }
