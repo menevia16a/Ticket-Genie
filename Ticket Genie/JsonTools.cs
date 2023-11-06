@@ -17,6 +17,8 @@ namespace Ticket_Genie
         [DataMember]
         public string authDatabase { get; set; }
         [DataMember]
+        public string worldDatabase { get; set; }
+        [DataMember]
         public string username { get; set; }
         [DataMember]
         public string password { get; set; }
@@ -66,14 +68,38 @@ namespace Ticket_Genie
 
         private static SQLConnectionSettingsInfo DeserializeSQLConnectionSettingsJSON()
         {
-            FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Open);
-            return DeserializeJSON<SQLConnectionSettingsInfo>(stream.ToString(), stream);
+            try
+            {
+                FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Open);
+                return DeserializeJSON<SQLConnectionSettingsInfo>(stream.ToString(), stream);
+            }
+            catch
+            {
+                File.Delete("SQLConnectionSettings.json");
+                File.Delete("SOAPConnectionSettings.json");
+                CreateDefaultJsonFiles();
+
+                FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Open);
+                return DeserializeJSON<SQLConnectionSettingsInfo>(stream.ToString(), stream);
+            }
         }
 
         public static SOAPConnectionSettingsInfo DeserializeSOAPConnectionSettingsJSON()
         {
-            FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Open);
-            return DeserializeJSON<SOAPConnectionSettingsInfo>(stream.ToString(), stream);
+            try
+            {
+                FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Open);
+                return DeserializeJSON<SOAPConnectionSettingsInfo>(stream.ToString(), stream);
+            }
+            catch
+            {
+                File.Delete("SQLConnectionSettings.json");
+                File.Delete("SOAPConnectionSettings.json");
+                CreateDefaultJsonFiles();
+
+                FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Open);
+                return DeserializeJSON<SOAPConnectionSettingsInfo>(stream.ToString(), stream);
+            }
         }
 
         public static Task<SQLConnectionSettingsInfo> GetSQLConnectionSettingsAsync()
@@ -100,6 +126,7 @@ namespace Ticket_Genie
                 port = Properties.Settings.Default.SQLPort,
                 characterDatabase = Properties.Settings.Default.CharacterDB,
                 authDatabase = Properties.Settings.Default.AuthDB,
+                worldDatabase = Properties.Settings.Default.WorldDB,
                 username = Properties.Settings.Default.SQLUsername,
                 password = Properties.Settings.Default.SQLPassword
             };
@@ -124,6 +151,7 @@ namespace Ticket_Genie
             Properties.Settings.Default.SQLPort = sqlSettings.port;
             Properties.Settings.Default.CharacterDB = sqlSettings.characterDatabase;
             Properties.Settings.Default.AuthDB = sqlSettings.authDatabase;
+            Properties.Settings.Default.WorldDB = sqlSettings.worldDatabase;
             Properties.Settings.Default.SQLUsername = sqlSettings.username;
             Properties.Settings.Default.SQLPassword = sqlSettings.password;
             // Load SOAP connection settings from JSON and save to the application settings

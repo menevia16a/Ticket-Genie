@@ -33,6 +33,7 @@ namespace Ticket_Genie
             SQLPortTextBox.Text = Properties.Settings.Default.SQLPort.ToString();
             CharacterDatabaseTextBox.Text = Properties.Settings.Default.CharacterDB;
             AuthDatabaseTextBox.Text = Properties.Settings.Default.AuthDB;
+            WorldDatabaseTextBox.Text = Properties.Settings.Default.WorldDB;
             SQLUsernameTextBox.Text = Properties.Settings.Default.SQLUsername;
             SQLPasswordTextBox.Text = Properties.Settings.Default.SQLPassword;
             // Load SOAP connection settings
@@ -53,6 +54,7 @@ namespace Ticket_Genie
                     SQLPortPanel.Visibility = Visibility.Visible;
                     CharacterDatabasePanel.Visibility = Visibility.Visible;
                     AuthDatabasePanel.Visibility = Visibility.Visible;
+                    WorldDatabasePanel.Visibility = Visibility.Visible;
                     SQLUsernamePanel.Visibility = Visibility.Visible;
                     SQLPasswordPanel.Visibility = Visibility.Visible;
                     // Set the SOAP panels to hidden
@@ -62,18 +64,19 @@ namespace Ticket_Genie
                     SOAPPasswordPanel.Visibility = Visibility.Hidden;
                     break;
                 case 1:
-                    // Set the SOAP panels to visible
-                    SOAPHostnamePanel.Visibility = Visibility.Visible;
-                    SOAPPortPanel.Visibility = Visibility.Visible;
-                    SOAPUsernamePanel.Visibility = Visibility.Visible;
-                    SOAPPasswordPanel.Visibility = Visibility.Visible;
                     // Set the SQL panels to hidden
                     SQLHostnamePanel.Visibility = Visibility.Hidden;
                     SQLPortPanel.Visibility = Visibility.Hidden;
                     CharacterDatabasePanel.Visibility = Visibility.Hidden;
                     AuthDatabasePanel.Visibility = Visibility.Hidden;
+                    WorldDatabasePanel.Visibility = Visibility.Hidden;
                     SQLUsernamePanel.Visibility = Visibility.Hidden;
                     SQLPasswordPanel.Visibility = Visibility.Hidden;
+                    // Set the SOAP panels to visible
+                    SOAPHostnamePanel.Visibility = Visibility.Visible;
+                    SOAPPortPanel.Visibility = Visibility.Visible;
+                    SOAPUsernamePanel.Visibility = Visibility.Visible;
+                    SOAPPasswordPanel.Visibility = Visibility.Visible;
                     break;
             }
         }
@@ -89,6 +92,7 @@ namespace Ticket_Genie
                 port = sqlPort,
                 characterDatabase = CharacterDatabaseTextBox.Text,
                 authDatabase = AuthDatabaseTextBox.Text,
+                worldDatabase = WorldDatabaseTextBox.Text,
                 username = SQLUsernameTextBox.Text,
                 password = SQLPasswordTextBox.Text
             };

@@ -93,17 +93,24 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="3" Margin="5,5,5,5" BorderThickness="2" BorderBrush="Black" Grid.Column="3">
+        <Border Grid.Row="2" Margin="5,5,5,5" BorderThickness="2" BorderBrush="Black" Grid.Column="3">
             <StackPanel x:Name="CharacterDatabasePanel" Orientation="Horizontal" Visibility="Visible">
                 <TextBlock Margin="0 0 5 0" x:Name="CharacterDatabaseTextBlock" Text="Character Database:" FontSize="14" VerticalAlignment="Center"/>
                 <TextBox x:Name="CharacterDatabaseTextBox" Margin="5 0 5 0" Width="134" FontSize="14" Background="#FF58607B" Foreground="CornflowerBlue"/>
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="4" Margin="5,5,5,5" BorderThickness="2" BorderBrush="Black" Grid.Column="3">
+        <Border Grid.Row="3" Margin="5,5,5,5" BorderThickness="2" BorderBrush="Black" Grid.Column="3">
             <StackPanel x:Name="AuthDatabasePanel" Orientation="Horizontal" Visibility="Visible">
                 <TextBlock Margin="0 0 5 0" x:Name="AuthDatabaseTextBlock" Text="Auth Database:" FontSize="14" VerticalAlignment="Center"/>
                 <TextBox x:Name="AuthDatabaseTextBox" Margin="5 0 5 0" Width="166" FontSize="14" Background="#FF58607B" Foreground="CornflowerBlue"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="4" Margin="5,5,5,5" BorderThickness="2" BorderBrush="Black" Grid.Column="3">
+            <StackPanel x:Name="WorldDatabasePanel" Orientation="Horizontal" Visibility="Visible">
+                <TextBlock Margin="0 0 5 0" x:Name="WorldDatabaseTextBlock" Text="World Database:" FontSize="14" VerticalAlignment="Center"/>
+                <TextBox x:Name="WorldDatabaseTextBox" Margin="5 0 5 0" Width="157" FontSize="14" Background="#FF58607B" Foreground="CornflowerBlue"/>
             </StackPanel>
         </Border>
 
