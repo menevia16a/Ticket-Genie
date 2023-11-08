@@ -12,7 +12,7 @@
     <Grid>
         <!-- Banning options -->
         <StackPanel Orientation="Vertical" Margin="10,10,0,0" HorizontalAlignment="Left" Width="219" Height="164" VerticalAlignment="Top">
-            <TextBlock Text="Ban Account:" HorizontalAlignment="Center" Margin="0,0,0,5" />
+            <TextBlock Text="Ban Account:" HorizontalAlignment="Center" Margin="0,0,0,5" ToolTip="Bans a user account for a specified amount of time, a negative value is pernament."/>
             <StackPanel Orientation="Vertical" Width="156" HorizontalAlignment="Center">
                 <TextBlock Text="Reason:" HorizontalAlignment="Center"/>
                 <TextBox x:Name="ReasonTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
@@ -28,7 +28,7 @@
 
         <!-- Login flagging options -->
         <StackPanel Orientation="Vertical" Margin="17,299,421,0">
-            <TextBlock Text="Set Login Flag:" Margin="5" Height="19" HorizontalAlignment="Center"/>
+            <TextBlock Text="Set Login Flag:" Margin="5" Height="19" HorizontalAlignment="Center" ToolTip="Sets an action to be executed at the player's next login."/>
             <ComboBox x:Name="FlagComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
                 <ComboBoxItem Content="Rename"/>
                 <ComboBoxItem Content="Reset Spells"/>
@@ -46,7 +46,7 @@
 
         <!-- Porting options -->
         <StackPanel Orientation="Vertical" Margin="17,179,421,135">
-            <TextBlock Text="Port to:" Margin="5" Height="19" HorizontalAlignment="Center"/>
+            <TextBlock Text="Port to:" Margin="5" Height="19" HorizontalAlignment="Center" ToolTip="Teleports an offline player to an inn in the selected city."/>
             <ComboBox x:Name="PortComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
                 <ComboBoxItem x:Name="PortComboBoxItem1" Content=""/>
                 <ComboBoxItem x:Name="PortComboBoxItem2" Content=""/>
@@ -60,7 +60,7 @@
 
         <!-- Mail options -->
         <StackPanel Orientation="Vertical" Margin="234,10,10,0">
-            <TextBlock Text="Send Mail:" HorizontalAlignment="Center" Margin="0,0,0,5" />
+            <TextBlock Text="Send Mail:" HorizontalAlignment="Center" Margin="0,0,0,5" ToolTip="Sends mail to the player from customer service."/>
             <StackPanel Orientation="Vertical" Height="246" Width="386">
                 <TextBlock Text="Subject:" HorizontalAlignment="Center"/>
                 <TextBox x:Name="SubjectTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
