@@ -193,13 +193,25 @@ namespace Ticket_Genie.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SpecifiedPlayerName {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PlayerGUID {
             get {
-                return ((string)(this["SpecifiedPlayerName"]));
+                return ((int)(this["PlayerGUID"]));
             }
             set {
-                this["SpecifiedPlayerName"] = value;
+                this["PlayerGUID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PlayerName {
+            get {
+                return ((string)(this["PlayerName"]));
+            }
+            set {
+                this["PlayerName"] = value;
             }
         }
     }

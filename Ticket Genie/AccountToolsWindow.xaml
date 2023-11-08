@@ -8,10 +8,10 @@
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
         Title="Account Tools" Height="450" Width="650"
-        WindowStyle="ToolWindow">
+        WindowStyle="ToolWindow" Closing="AccountToolsWindow_Closing">
     <Grid>
         <!-- Banning options -->
-        <StackPanel Orientation="Vertical" Margin="10,10,0,0" HorizontalAlignment="Left" Width="219" Height="149" VerticalAlignment="Top">
+        <StackPanel Orientation="Vertical" Margin="10,10,0,0" HorizontalAlignment="Left" Width="219" Height="164" VerticalAlignment="Top">
             <TextBlock Text="Ban Account:" HorizontalAlignment="Center" Margin="0,0,0,5" />
             <StackPanel Orientation="Vertical" Width="156" HorizontalAlignment="Center">
                 <TextBlock Text="Reason:" HorizontalAlignment="Center"/>
@@ -26,8 +26,26 @@
             <Button x:Name="UnbanButton" Content="Unban" Width="49" Background="#6495ED" Foreground="White" Click="OnUnbanClick"/>
         </StackPanel>
 
+        <!-- Login flagging options -->
+        <StackPanel Orientation="Vertical" Margin="10,299,428,10">
+            <TextBlock Text="Set Login Flag:" Margin="5" Height="19" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="FlagComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
+                <ComboBoxItem Content="Rename"/>
+                <ComboBoxItem Content="Reset Spells"/>
+                <ComboBoxItem Content="Reset Talents"/>
+                <ComboBoxItem Content="Reset Pet Talents"/>
+                <ComboBoxItem Content="Faction Change"/>
+                <ComboBoxItem Content="Race Change"/>
+                <ComboBoxItem Content="Customize"/>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal" Width="100" Height="60">
+                <Button x:Name="FlagButton" Content="Flag" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White"/>
+                <Button x:Name="KickButton" Content="Kick" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White"/>
+            </StackPanel>
+        </StackPanel>
+
         <!-- Porting options -->
-        <StackPanel Orientation="Vertical" Margin="16,174,428,140">
+        <StackPanel Orientation="Vertical" Margin="10,179,428,140">
             <TextBlock Text="Port to:" Margin="5" Height="19" HorizontalAlignment="Center"/>
             <ComboBox x:Name="PortComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
                 <ComboBoxItem x:Name="PortComboBoxItem1" Content=""/>
@@ -49,7 +67,7 @@
                 <Label Content="Items:" HorizontalAlignment="Center" ToolTip="The right side of the colon specifies item ID's, the right side is the amount of the specified item."/>
             </StackPanel>
             <WrapPanel Orientation="Horizontal" Width="346" Height="60">
-                <TextBox x:Name="ItemIdTextBox1" Height="25" Width="40" Margin="20,5,0,0" Background="#FF58607B" Foreground="CornflowerBlue" VerticalAlignment="Top" PreviewTextInput="NumericInputOnly"/>
+                <TextBox x:Name="ItemIdTextBox1" Height="25" Width="40" Margin="20,5,0,0" Background="#FF58607B" Foreground="CornflowerBlue" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="NumericInputOnly"/>
                 <Label Content=":" VerticalAlignment="Top" Margin="0" FontSize="15"/>
                 <TextBox x:Name="ItemAmountTextBox1" Height="25" Width="30" Margin="0,5,25,0" Background="#FF58607B" Foreground="CornflowerBlue" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="1" PreviewTextInput="NumericInputOnly"/>
                 <TextBox x:Name="ItemIdTextBox2" Height="25" Width="40" Margin="0,5,0,0" Background="#FF58607B" Foreground="CornflowerBlue" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="NumericInputOnly"/>

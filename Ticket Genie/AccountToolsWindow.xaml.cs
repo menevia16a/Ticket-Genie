@@ -55,11 +55,12 @@ namespace Ticket_Genie
         private PortLocation portLocation;
         private static int playerGUID;
         private static string playerName;
+        private static bool isValidPlayer;
         private readonly TCSOAPService _tcSoapService;
         private readonly DBConnector _dbConnectorCharacters;
         private readonly DBConnector _dbConnectorWorld;
 
-        public AccountToolsWindow(int ticketCharacterGUID, string ticketPlayerName = "")
+        public AccountToolsWindow()
         {
             InitializeComponent();
 
@@ -85,13 +86,13 @@ namespace Ticket_Genie
             _dbConnectorCharacters = new DBConnector(charactersConnectionString);
             _dbConnectorWorld = new DBConnector(worldConnectionString);
 
-            if (ticketCharacterGUID == 0)
+            if (Properties.Settings.Default.PlayerGUID == 0)
             {
                 MessageBox.Show("No player was selected, you will be prompted to specify a player's name.", "No Player Detected", MessageBoxButton.OK, MessageBoxImage.Information);
-                Properties.Settings.Default.SpecifiedPlayerName = InputBox.ShowInputBox("Please enter a player's name", false);
+                Properties.Settings.Default.PlayerName = InputBox.ShowInputBox("Please enter a player's name", false);
+                Properties.Settings.Default.Save();
 
-                if (string.IsNullOrEmpty(Properties.Settings.Default.SpecifiedPlayerName))
-                    InvalidPlayer();
+                if (Properties.Settings.Default.PlayerName?.Length == 0) { InvalidPlayer(); }
                 else
                 {
                     // Verify name given is actually a player
@@ -101,7 +102,7 @@ namespace Ticket_Genie
                         {
                             connection.Open();
                             var command = new MySqlCommand("SELECT guid, name FROM characters WHERE name = @name LIMIT 1", connection);
-                            command.Parameters.AddWithValue("@name", Properties.Settings.Default.SpecifiedPlayerName);
+                            command.Parameters.AddWithValue("@name", Properties.Settings.Default.PlayerName);
                             var reader = command.ExecuteReader();
 
                             if (reader.Read() && reader.HasRows)
@@ -114,6 +115,8 @@ namespace Ticket_Genie
 
                             if (playerGUID == 0)
                                 InvalidPlayer();
+                            else
+                                isValidPlayer = true;
                         }
                         catch (MySqlException ex)
                         {
@@ -124,8 +127,8 @@ namespace Ticket_Genie
             }
             else
             {
-                playerGUID = ticketCharacterGUID;
-                playerName = ticketPlayerName;
+                playerGUID = Properties.Settings.Default.PlayerGUID;
+                playerName = Properties.Settings.Default.PlayerName;
             }
 
             Loaded += AccountToolsWindow_Loaded;
@@ -179,6 +182,17 @@ namespace Ticket_Genie
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+
+            if (!isValidPlayer)
+                Close();
+        }
+
+        private void AccountToolsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Reset PlayerGUID and PlayerName settings
+            Properties.Settings.Default.PlayerGUID = 0;
+            Properties.Settings.Default.PlayerName = "";
+            Properties.Settings.Default.Save();
         }
 
         private void OnBanClick(object sender, RoutedEventArgs e)
@@ -456,8 +470,9 @@ namespace Ticket_Genie
 
         private void InvalidPlayer()
         {
+            isValidPlayer = false;
+
             MessageBox.Show("Could not find a player associated with that name, the Account Tools window will now close.", "No Player Found", MessageBoxButton.OK, MessageBoxImage.Error);
-            Close();
         }
 
         private PlayerFaction GetPlayerFaction(int playerRace)

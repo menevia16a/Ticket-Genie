@@ -66,10 +66,7 @@ namespace Ticket_Genie
                 Application.Current.Shutdown();
         }
 
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Application.Current.Shutdown(); // Terminate the process on window close
-        }
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) { Application.Current.Shutdown(); } // Terminate the process on window close
 
         private void OnTicketSelected(object sender, RoutedEventArgs e)
         {
@@ -200,13 +197,16 @@ namespace Ticket_Genie
         private void OnAccountToolsClick(object sender, RoutedEventArgs e)
         {
             var ticketID = Properties.Settings.Default.CurrentTicketID;
-            var accountToolsWindow = new AccountToolsWindow(0);
+            var accountToolsWindow = new AccountToolsWindow();
 
             // Pass player GUID and Name to the account tools window if a ticket is selected
             if (ticketID != 0)
             {
                 Ticket ticket = _ticketManager.GetTicket(ticketID);
-                accountToolsWindow = new AccountToolsWindow(ticket.playerGUID, ticket.name);
+
+                Properties.Settings.Default.PlayerGUID = ticket.playerGUID;
+                Properties.Settings.Default.PlayerName = ticket.name;
+                Properties.Settings.Default.Save();
             }
 
             accountToolsWindow.ShowDialog();
