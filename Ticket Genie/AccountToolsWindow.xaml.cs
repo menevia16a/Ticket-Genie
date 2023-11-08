@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -16,8 +17,18 @@ namespace Ticket_Genie
         {
             Alliance = 0,
             Horde = 1,
-            Neutral = 2,
-            Invalid = 3
+            Invalid = 2
+        }
+
+        private enum LoginFlag : short
+        {
+            AT_LOGIN_RENAME = 1,
+            AT_LOGIN_RESET_SPELLS = 2,
+            AT_LOGIN_RESET_TALENTS = 4,
+            AT_LOGIN_CUSTOMIZE = 8,
+            AT_LOGIN_RESET_PET_TALENTS = 16,
+            AT_LOGIN_CHANGE_FACTION = 64,
+            AT_LOGIN_CHANGE_RACE = 128
         }
 
         // Declare a dictionary to map races to factions
@@ -64,7 +75,6 @@ namespace Ticket_Genie
         private static int playerGUID;
         private static string playerName;
         private static bool isValidPlayer;
-        private static bool isValidLocation;
         private readonly TCSOAPService _tcSoapService;
         private readonly DBConnector _dbConnectorCharacters;
         private readonly DBConnector _dbConnectorWorld;
@@ -74,7 +84,6 @@ namespace Ticket_Genie
             InitializeComponent();
 
             isValidPlayer = false;
-            isValidLocation = false;
 
             var charactersConnectionString = new MySqlConnectionStringBuilder
             {
@@ -253,6 +262,8 @@ namespace Ticket_Genie
             // Check if player is logged in
             using (var connection = _dbConnectorCharacters.GetConnection())
             {
+                bool isPlayerOnline = false;
+
                 try
                 {
                     connection.Open();
@@ -266,13 +277,15 @@ namespace Ticket_Genie
                         int playerOnline = reader.GetInt16(0);
 
                         if (playerOnline == 1)
-                        {
                             MessageBox.Show("Player must be offline to be ported.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return;
-                        }
+                        else
+                            isPlayerOnline = true;
                     }
 
                     _dbConnectorCharacters.CloseConnection(reader);
+
+                    if (!isPlayerOnline)
+                        return;
                 }
                 catch (MySqlException ex)
                 {
@@ -289,17 +302,16 @@ namespace Ticket_Genie
                 return;
             }
 
+            bool isValidLocation = false;
+
             // Get the port location object
             switch (playerFaction)
             {
                 case PlayerFaction.Alliance:
-                    isValidLocation = alliancePortLocations.TryGetValue(portName, out portLocation);
+                    isValidLocation = alliancePortLocations.TryGetValue(portName, out portLocation) && neutralPortLocations.TryGetValue(portName, out portLocation);
                     break;
                 case PlayerFaction.Horde:
-                    isValidLocation = hordePortLocations.TryGetValue(portName, out portLocation);
-                    break;
-                case PlayerFaction.Neutral:
-                    isValidLocation = neutralPortLocations.TryGetValue(portName, out portLocation);
+                    isValidLocation = hordePortLocations.TryGetValue(portName, out portLocation) && neutralPortLocations.TryGetValue(portName, out portLocation);
                     break;
                 case PlayerFaction.Invalid:
                     MessageBox.Show("Invalid player faction.", "Porting Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -337,6 +349,72 @@ namespace Ticket_Genie
                 }
             }
         }
+
+        private void OnFlagClick(object sender, RoutedEventArgs e)
+        {
+            if (playerGUID == 0)
+                return;
+
+            int loginFlags = 0;
+
+            // Update character's login flags
+            using (var connection = _dbConnectorCharacters.GetConnection())
+            {
+                try
+                {
+                    // Retrieve current at_login flags to not override anything
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT at_login FROM characters WHERE guid = @guid LIMIT 1", connection);
+                    command.Parameters.AddWithValue("@guid", playerGUID);
+                    var reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        short currentLoginFlags = reader.GetInt16(0);
+
+                        switch (FlagComboBox.SelectedIndex)
+                        {
+                            case 0: // Rename
+                                loginFlags = currentLoginFlags + (short)LoginFlag.AT_LOGIN_RENAME;
+                                break;
+                            case 1: // Reset spells
+                                loginFlags = currentLoginFlags + (short)LoginFlag.AT_LOGIN_RESET_SPELLS;
+                                break;
+                            case 2: // Reset talents
+                                loginFlags = currentLoginFlags + (short)LoginFlag.AT_LOGIN_RESET_TALENTS;
+                                break;
+                            case 3: // Reset pet talents
+                                loginFlags = currentLoginFlags + (short)LoginFlag.AT_LOGIN_RESET_PET_TALENTS;
+                                break;
+                            case 4: // Faction change
+                                loginFlags = currentLoginFlags + (short)LoginFlag.AT_LOGIN_CHANGE_FACTION;
+                                break;
+                            case 5: // Race change
+                                loginFlags = currentLoginFlags + (short)LoginFlag.AT_LOGIN_CHANGE_RACE;
+                                break;
+                            case 6: // Customize
+                                loginFlags = currentLoginFlags + (short)LoginFlag.AT_LOGIN_CUSTOMIZE;
+                                break;
+                        }
+                    }
+
+                    // Update character's at_login flags
+                    var command2 = new MySqlCommand("UPDATE characters SET at_login = @atLoginFlags WHERE guid = @guid", connection);
+                    command2.Parameters.AddWithValue("@atLoginFlags", loginFlags);
+                    command2.Parameters.AddWithValue("@guid", playerGUID);
+                    command2.ExecuteNonQuery();
+
+                    _dbConnectorCharacters.CloseConnection(reader);
+                    MessageBox.Show($"Successfully marked player {playerName} for a {FlagComboBox.Text} at their next login.", "Login Flags", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        // TODO: Create kick functionality
 
         private void OnMailClick(object sender, RoutedEventArgs e)
         {

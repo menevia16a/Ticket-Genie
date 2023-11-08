@@ -39,7 +39,7 @@
                 <ComboBoxItem Content="Customize"/>
             </ComboBox>
             <StackPanel Orientation="Horizontal" Width="100" Height="60">
-                <Button x:Name="FlagButton" Content="Flag" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White"/>
+                <Button x:Name="FlagButton" Content="Flag" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White" Click="OnFlagClick"/>
                 <Button x:Name="KickButton" Content="Kick" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White"/>
             </StackPanel>
         </StackPanel>
