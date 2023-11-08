@@ -197,7 +197,6 @@ namespace Ticket_Genie
         private void OnAccountToolsClick(object sender, RoutedEventArgs e)
         {
             var ticketID = Properties.Settings.Default.CurrentTicketID;
-            var accountToolsWindow = new AccountToolsWindow();
 
             // Pass player GUID and Name to the account tools window if a ticket is selected
             if (ticketID != 0)
@@ -208,6 +207,8 @@ namespace Ticket_Genie
                 Properties.Settings.Default.PlayerName = ticket.name;
                 Properties.Settings.Default.Save();
             }
+
+            var accountToolsWindow = new AccountToolsWindow();
 
             accountToolsWindow.ShowDialog();
         }

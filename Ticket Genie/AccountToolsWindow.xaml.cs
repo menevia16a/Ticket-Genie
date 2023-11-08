@@ -16,11 +16,12 @@ namespace Ticket_Genie
         {
             Alliance = 0,
             Horde = 1,
-            Invalid = 2
+            Neutral = 2,
+            Invalid = 3
         }
 
         // Declare a dictionary to map races to factions
-        private Dictionary<int, PlayerFaction> raceToFaction = new Dictionary<int, PlayerFaction>
+        private readonly Dictionary<int, PlayerFaction> raceToFaction = new Dictionary<int, PlayerFaction>
         {
             { 1, PlayerFaction.Alliance }, // Human
             { 3, PlayerFaction.Alliance }, // Dwarf
@@ -35,15 +36,15 @@ namespace Ticket_Genie
         };
 
         // Declare dictionaries to map city names to PortLocation objects
-        private Dictionary<string, PortLocation> alliancePortLocations = new Dictionary<string, PortLocation>
+        private readonly Dictionary<string, PortLocation> alliancePortLocations = new Dictionary<string, PortLocation>
         {
             { "Stormwind", new PortLocation { name = "Stormwind", positionX = -8877.911133f, positionY = 671.453857f, positionZ = 104.950226f, map = 0, orientation = 0.583116f } },
             { "Ironforge", new PortLocation { name = "Ironforge", positionX = -4839.234863f, positionY = -871.912659f, positionZ = 510.246735f, map = 0, orientation = 4.900395f } },
             { "Darnassus", new PortLocation { name = "Darnassus", positionX = 10139.388672f, positionY = 2214.697510f, positionZ = 1329.984741f, map = 1, orientation = 2.186495f } },
             { "Exodar", new PortLocation { name = "Exodar", positionX = -3734.079102f, positionY = -11694.936523f, positionZ = -105.742058f, map = 530, orientation = 3.260193f } }
         };
-        
-        private Dictionary<string, PortLocation> hordePortLocations = new Dictionary<string, PortLocation>
+
+        private readonly Dictionary<string, PortLocation> hordePortLocations = new Dictionary<string, PortLocation>
         {
             { "Orgrimmar", new PortLocation { name = "Orgrimmar", positionX = 1636.935791f, positionY = -4443.699707f, positionZ = 15.633880f, map = 1, orientation = 2.622632f } },
             { "Undercity", new PortLocation {name = "Undercity", positionX = 1644.060913f, positionY = 218.970184f, positionZ = -43.102631f, map = 0, orientation = 2.709491f} },
@@ -51,11 +52,19 @@ namespace Ticket_Genie
             { "Silvermoon City", new PortLocation {name = "Silvermoon City", positionX = 9683.867188f, positionY = -7383.734863f, positionZ = 22.795446f, map = 530, orientation = 1.505019f} },
         };
 
+        private readonly Dictionary<string, PortLocation> neutralPortLocations = new Dictionary<string, PortLocation>
+        {
+            { "Shattrath", new PortLocation { name = "Shattrath", positionX = -1755.668213f, positionY = 5153.974609f, positionZ = -37.204845f, map = 530, orientation = 1.801668f } },
+            { "Dalaran", new PortLocation { name = "Dalaran", positionX = 5846.850098f, positionY = 648.439270f, positionZ = 647.512695f, map = 571, orientation = 0.103653f } },
+            { "City of Karma", new PortLocation { name = "City of Karma", positionX = 11245.474609f, positionY = 11638.021484f, positionZ = 0.013634f, map = 727, orientation = 0.017275f } },
+        };
+
         private static PlayerFaction playerFaction;
         private PortLocation portLocation;
         private static int playerGUID;
         private static string playerName;
         private static bool isValidPlayer;
+        private static bool isValidLocation;
         private readonly TCSOAPService _tcSoapService;
         private readonly DBConnector _dbConnectorCharacters;
         private readonly DBConnector _dbConnectorWorld;
@@ -63,6 +72,9 @@ namespace Ticket_Genie
         public AccountToolsWindow()
         {
             InitializeComponent();
+
+            isValidPlayer = false;
+            isValidLocation = false;
 
             var charactersConnectionString = new MySqlConnectionStringBuilder
             {
@@ -127,6 +139,7 @@ namespace Ticket_Genie
             }
             else
             {
+                isValidPlayer = true;
                 playerGUID = Properties.Settings.Default.PlayerGUID;
                 playerName = Properties.Settings.Default.PlayerName;
             }
@@ -173,6 +186,11 @@ namespace Ticket_Genie
                             PortComboBoxItem3.Content = hordePortLocations.ElementAt(2).Key;
                             PortComboBoxItem4.Content = hordePortLocations.ElementAt(3).Key;
                         }
+
+                        // Include neutral port locations
+                        PortComboBoxItem4.Content = neutralPortLocations.ElementAt(0).Key;
+                        PortComboBoxItem5.Content = neutralPortLocations.ElementAt(1).Key;
+                        PortComboBoxItem6.Content = neutralPortLocations.ElementAt(2).Key;
                     }
 
                     _dbConnectorCharacters.CloseConnection(reader);
@@ -275,22 +293,23 @@ namespace Ticket_Genie
             switch (playerFaction)
             {
                 case PlayerFaction.Alliance:
-                    if (!alliancePortLocations.TryGetValue(portName, out portLocation))
-                    {
-                        MessageBox.Show("Invalid port location.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
+                    isValidLocation = alliancePortLocations.TryGetValue(portName, out portLocation);
                     break;
                 case PlayerFaction.Horde:
-                    if (!hordePortLocations.TryGetValue(portName, out portLocation))
-                    {
-                        MessageBox.Show("Invalid port location.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
+                    isValidLocation = hordePortLocations.TryGetValue(portName, out portLocation);
+                    break;
+                case PlayerFaction.Neutral:
+                    isValidLocation = neutralPortLocations.TryGetValue(portName, out portLocation);
                     break;
                 case PlayerFaction.Invalid:
-                    MessageBox.Show("Invalid player faction.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Invalid player faction.", "Porting Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
+            }
+
+            if (!isValidLocation)
+            {
+                MessageBox.Show("Invalid port location object.", "Porting Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
             // Port the player to the selected location

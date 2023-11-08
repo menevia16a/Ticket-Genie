@@ -27,7 +27,7 @@
         </StackPanel>
 
         <!-- Login flagging options -->
-        <StackPanel Orientation="Vertical" Margin="10,299,428,10">
+        <StackPanel Orientation="Vertical" Margin="17,299,421,0">
             <TextBlock Text="Set Login Flag:" Margin="5" Height="19" HorizontalAlignment="Center"/>
             <ComboBox x:Name="FlagComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
                 <ComboBoxItem Content="Rename"/>
@@ -45,13 +45,15 @@
         </StackPanel>
 
         <!-- Porting options -->
-        <StackPanel Orientation="Vertical" Margin="10,179,428,140">
+        <StackPanel Orientation="Vertical" Margin="17,179,421,135">
             <TextBlock Text="Port to:" Margin="5" Height="19" HorizontalAlignment="Center"/>
             <ComboBox x:Name="PortComboBox" Width="160" Margin="5" Height="25" HorizontalContentAlignment="Center">
                 <ComboBoxItem x:Name="PortComboBoxItem1" Content=""/>
                 <ComboBoxItem x:Name="PortComboBoxItem2" Content=""/>
                 <ComboBoxItem x:Name="PortComboBoxItem3" Content=""/>
                 <ComboBoxItem x:Name="PortComboBoxItem4" Content=""/>
+                <ComboBoxItem x:Name="PortComboBoxItem5" Content=""/>
+                <ComboBoxItem x:Name="PortComboBoxItem6" Content=""/>
             </ComboBox>
             <Button x:Name="PortButton" Content="Port" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White" Click="OnPortClick"/>
         </StackPanel>
