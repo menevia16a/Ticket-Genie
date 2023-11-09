@@ -72,7 +72,7 @@ namespace Ticket_Genie
 
                         reader2.Close();
 
-                        if (usernameFromDB == username && securityLevel > 2) // Verify username and security level
+                        if (usernameFromDB == username && securityLevel > 1) // Verify username and security level
                         {
                             var command3 = new MySqlCommand("SELECT TicketGeniePin FROM account_access WHERE AccountID = @id", connection);
                             command3.Parameters.AddWithValue("@id", accountID);

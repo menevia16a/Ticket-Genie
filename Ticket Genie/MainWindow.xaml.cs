@@ -50,9 +50,12 @@ namespace Ticket_Genie
                     foreach (var ticket in tickets)
                     {
                         // Add the ticket to the left side list on the main window
-                        Ticket listItem = new Ticket();
-                        listItem.id = ticket.id;
-                        listItem.name = ticket.name;
+                        Ticket listItem = new Ticket
+                        {
+                            id = ticket.id,
+                            name = ticket.name
+                        };
+
                         TicketList.Items.Add(listItem);
                     }
 
@@ -79,8 +82,7 @@ namespace Ticket_Genie
                 MessageBox.Show("Please select a character first.", "No Character Selected", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (TicketList.SelectedIndex == -1)
-                return;
+            else if (TicketList.SelectedIndex == -1) { return; }
 
             // Retrieve selected ticket
             if (sender is ListBox listBox && listBox.SelectedItem is Ticket selectedTicket)
