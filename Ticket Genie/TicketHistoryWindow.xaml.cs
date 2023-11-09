@@ -87,6 +87,14 @@ namespace Ticket_Genie
                 Close();
         }
 
+        private void TicketHisoryWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Reset PlayerGUID and PlayerName settings
+            Properties.Settings.Default.PlayerGUID = 0;
+            Properties.Settings.Default.PlayerName = "";
+            Properties.Settings.Default.Save();
+        }
+
         private void InvalidPlayer()
         {
             isValidPlayer = false;

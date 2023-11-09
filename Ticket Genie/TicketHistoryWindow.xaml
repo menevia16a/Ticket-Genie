@@ -8,7 +8,7 @@
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
         Title="Ticket History" Height="450" Width="650"
-        WindowStyle="ToolWindow">
+        WindowStyle="ToolWindow" Closing="TicketHisoryWindow_Closing">
     <Grid>
         
     </Grid>
