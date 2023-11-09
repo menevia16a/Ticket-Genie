@@ -109,7 +109,7 @@ namespace Ticket_Genie
             }
         }
 
-        private void RefreshTicketList()
+        public void RefreshTicketList()
         {
             // Trigger ticket list updating
             TicketList.Items.Clear();
@@ -144,9 +144,16 @@ namespace Ticket_Genie
 
         private void OnConnectionSettingsClick(object sender, RoutedEventArgs e)
         {
-            // Open the Connection Settings window to select a character
+            // Open the Connection Settings window to set the connection settings
             var connectionSettings = new ConnectionSettingsWindow();
             connectionSettings.ShowDialog();
+        }
+
+        private void OnTicketHistoryClick(object sender, RoutedEventArgs e)
+        {
+            // Open the Ticket History window to search a player's previous tickets
+            var ticketHistoryWindow = new TicketHistoryWindow();
+            ticketHistoryWindow.ShowDialog();
         }
 
         private void OnAboutClick(object sender, RoutedEventArgs e)
