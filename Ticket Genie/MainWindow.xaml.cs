@@ -125,9 +125,12 @@ namespace Ticket_Genie
 
             foreach (var ticket in tickets)
             {
-                Ticket listItem = new Ticket();
-                listItem.id = ticket.id;
-                listItem.name = ticket.name;
+                Ticket listItem = new Ticket
+                {
+                    id = ticket.id,
+                    name = ticket.name
+                };
+
                 TicketList.Items.Add(listItem);
             }
         }
