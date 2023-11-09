@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
-        Title="About" Height="200" Width="250"
+        Title="About" Height="240" Width="250"
         WindowStyle="ToolWindow">
     <Grid>
         <TextBlock Text="Created by: Veil and Serithul" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,51,0,0" FontWeight="Bold"/>

@@ -107,8 +107,6 @@ namespace Ticket_Genie
 
                 TicketList.Items.Add(listItem);
             }
-
-            MessageBox.Show($"All of {playerName}'s ticket history has been loaded.", "Ticket History List", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void TicketHisoryWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
