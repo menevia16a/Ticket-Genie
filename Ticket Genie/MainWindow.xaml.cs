@@ -174,7 +174,7 @@ namespace Ticket_Genie
         private void OnCloseClick(object sender, RoutedEventArgs e)
         {
             var ticketID = Properties.Settings.Default.CurrentTicketID;
-            
+
             if (ticketID == 0)
             {
                 MessageBox.Show("Please select a ticket first.", "No Ticket Selected", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -198,7 +198,6 @@ namespace Ticket_Genie
         {
             var ticketID = Properties.Settings.Default.CurrentTicketID;
 
-            // Pass player GUID and Name to the account tools window if a ticket is selected
             if (ticketID != 0)
             {
                 Ticket ticket = _ticketManager.GetTicket(ticketID);

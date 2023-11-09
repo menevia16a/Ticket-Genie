@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Text.RegularExpressions;
 using System.Windows;
 using Essy.Tools.InputBox;
@@ -258,40 +259,8 @@ namespace Ticket_Genie
         {
             if (playerGUID == 0)
                 return;
-
-            // Check if player is logged in
-            using (var connection = _dbConnectorCharacters.GetConnection())
-            {
-                bool isPlayerOnline = false;
-
-                try
-                {
-                    connection.Open();
-                    var command = new MySqlCommand("SELECT online FROM characters WHERE guid = @guid LIMIT 1", connection);
-                    command.Parameters.AddWithValue("@guid", playerGUID);
-                    var reader = command.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-                        // Check if the player is online
-                        int playerOnline = reader.GetInt16(0);
-
-                        if (playerOnline == 1)
-                            MessageBox.Show("Player must be offline to be ported.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        else
-                            isPlayerOnline = true;
-                    }
-
-                    _dbConnectorCharacters.CloseConnection(reader);
-
-                    if (!isPlayerOnline)
-                        return;
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
+            else if (IsPlayerOnline())
+                MessageBox.Show($"{playerName} must be offline to be ported.", "Porting Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             // Get the selected port location
             string portName = PortComboBox.Text;
@@ -414,7 +383,17 @@ namespace Ticket_Genie
             }
         }
 
-        // TODO: Create kick functionality
+        private void OnKickClick(object sender, RoutedEventArgs e)
+        {
+            if (playerGUID == 0)
+                return;
+            else if (!IsPlayerOnline())
+                MessageBox.Show($"{playerName} is not currently online.", "Kicking Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            // Kick the player
+            if (_tcSoapService.ExecuteSOAPCommand($"kick {playerName}"))
+                MessageBox.Show($"{playerName} has been kicked.", "Player Kicked", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void OnMailClick(object sender, RoutedEventArgs e)
         {
@@ -555,7 +534,7 @@ namespace Ticket_Genie
             }
             else if (invalidItems > 0)
             {
-                MessageBox.Show($"One or more of the items listed are invalid.", "Mail Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("One or more of the items listed are invalid.", "Mail Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             else
@@ -587,6 +566,39 @@ namespace Ticket_Genie
         }
 
         private void NumericInputOnly(object sender, System.Windows.Input.TextCompositionEventArgs e) { e.Handled = IsTextNumeric(e.Text); }
+
+        private bool IsPlayerOnline()
+        {
+            bool isPlayerOnline = false;
+
+            // Check if player is logged in
+            using (var connection = _dbConnectorCharacters.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT online FROM characters WHERE guid = @guid LIMIT 1", connection);
+                    command.Parameters.AddWithValue("@guid", playerGUID);
+                    var reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        // Check if the player is online
+                        int playerOnline = reader.GetInt16(0);
+
+                        isPlayerOnline = playerOnline == 1;
+                    }
+
+                    _dbConnectorCharacters.CloseConnection(reader);
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            return isPlayerOnline;
+        }
 
         // Make sure the item id exists in the database
         private bool IsValidItem(int itemID)
