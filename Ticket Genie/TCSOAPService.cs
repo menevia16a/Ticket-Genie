@@ -51,7 +51,7 @@ namespace Ticket_Genie
                 }
                 else
                     return String.Empty;
-            }   
+            }
         }
 
         private string ExtractResponseStringFromSOAPResponse(string xmlSOAPresponse)
@@ -73,7 +73,7 @@ namespace Ticket_Genie
 
         public bool ExecuteSOAPCommand(string command)
         {
-            if (Call(command)?.Length == 0)
+            if (Call(command)?.Length == 0 && command != "reload gm_tickets") // Exception for the reload command since it returns a 0 length
             {
                 MessageBox.Show("Error executing SOAP command.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

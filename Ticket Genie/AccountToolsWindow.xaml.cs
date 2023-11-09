@@ -367,13 +367,16 @@ namespace Ticket_Genie
                         }
                     }
 
-                    // Update character's at_login flags
-                    var command2 = new MySqlCommand("UPDATE characters SET at_login = @atLoginFlags WHERE guid = @guid", connection);
-                    command2.Parameters.AddWithValue("@atLoginFlags", loginFlags);
-                    command2.Parameters.AddWithValue("@guid", playerGUID);
-                    command2.ExecuteNonQuery();
-
                     _dbConnectorCharacters.CloseConnection(reader);
+
+                    // Update character's at_login flags
+                    connection.Open();
+                    command = new MySqlCommand("UPDATE characters SET at_login = @atLoginFlags WHERE guid = @guid", connection);
+                    command.Parameters.AddWithValue("@atLoginFlags", loginFlags);
+                    command.Parameters.AddWithValue("@guid", playerGUID);
+                    command.ExecuteNonQuery();
+
+                    _dbConnectorCharacters.CloseConnection();
                     MessageBox.Show($"Successfully marked player {playerName} for a {FlagComboBox.Text} at their next login.", "Login Flags", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (MySqlException ex)
