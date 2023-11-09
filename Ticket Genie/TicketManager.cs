@@ -219,7 +219,7 @@ namespace Ticket_Genie
                 try
                 {
                     connection.Open();
-                    var command = new MySqlCommand("SELECT id, name FROM gm_ticket WHERE type = 1 AND name = @playerName", connection);
+                    var command = new MySqlCommand("SELECT id, name FROM gm_ticket WHERE type IN (1, 2) AND name = @playerName", connection);
                     command.Parameters.AddWithValue("@playerName", Properties.Settings.Default.PlayerName);
                     var reader = command.ExecuteReader();
                     var tickets = new List<Ticket>();
