@@ -152,7 +152,19 @@ namespace Ticket_Genie
         private void OnTicketHistoryClick(object sender, RoutedEventArgs e)
         {
             // Open the Ticket History window to search a player's previous tickets
+            var ticketID = Properties.Settings.Default.CurrentTicketID;
+
+            if (ticketID != 0)
+            {
+                Ticket ticket = _ticketManager.GetTicket(ticketID);
+
+                Properties.Settings.Default.PlayerGUID = ticket.playerGUID;
+                Properties.Settings.Default.PlayerName = ticket.name;
+                Properties.Settings.Default.Save();
+            }
+
             var ticketHistoryWindow = new TicketHistoryWindow();
+
             ticketHistoryWindow.ShowDialog();
         }
 
