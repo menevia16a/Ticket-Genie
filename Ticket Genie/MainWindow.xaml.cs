@@ -79,7 +79,7 @@ namespace Ticket_Genie
                 Properties.Settings.Default.CurrentTicketID = 0;
                 Properties.Settings.Default.Save();
                 TicketList.SelectedIndex = -1;
-                MessageBox.Show("Please select a character first.", "No Character Selected", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please select a character first.", "No Character Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             else if (TicketList.SelectedIndex == -1) { return; }
