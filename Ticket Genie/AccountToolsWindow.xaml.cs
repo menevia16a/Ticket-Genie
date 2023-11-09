@@ -131,7 +131,7 @@ namespace Ticket_Genie
                                 playerName = reader.GetString(1);
                             }
 
-                            _dbConnectorCharacters.CloseConnection(reader);
+                            _dbConnectorCharacters.CloseConnection(command, reader);
 
                             if (playerGUID == 0)
                                 InvalidPlayer();
@@ -157,6 +157,9 @@ namespace Ticket_Genie
 
         private void AccountToolsWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!isValidPlayer)
+                Close();
+
             // Get the player's faction and store it
             using (var connection = _dbConnectorCharacters.GetConnection())
             {
@@ -201,16 +204,13 @@ namespace Ticket_Genie
                         PortComboBoxItem6.Content = neutralPortLocations.ElementAt(2).Key;
                     }
 
-                    _dbConnectorCharacters.CloseConnection(reader);
+                    _dbConnectorCharacters.CloseConnection(command, reader);
                 }
                 catch (MySqlException ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-
-            if (!isValidPlayer)
-                Close();
         }
 
         private void AccountToolsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -306,7 +306,7 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@guid", playerGUID);
                     command.ExecuteNonQuery();
 
-                    _dbConnectorCharacters.CloseConnection();
+                    _dbConnectorCharacters.CloseConnection(command);
 
                     MessageBox.Show($"Player {playerName} has been ported to {portName}.", "Port Successful", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -365,7 +365,7 @@ namespace Ticket_Genie
                         }
                     }
 
-                    _dbConnectorCharacters.CloseConnection(reader);
+                    _dbConnectorCharacters.CloseConnection(command, reader);
 
                     // Update character's at_login flags
                     connection.Open();
@@ -374,7 +374,7 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@guid", playerGUID);
                     command.ExecuteNonQuery();
 
-                    _dbConnectorCharacters.CloseConnection();
+                    _dbConnectorCharacters.CloseConnection(command);
                     MessageBox.Show($"Successfully marked player {playerName} for a {FlagComboBox.Text} at their next login.", "Login Flags", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (MySqlException ex)
@@ -590,7 +590,7 @@ namespace Ticket_Genie
                         isPlayerOnline = playerOnline == 1;
                     }
 
-                    _dbConnectorCharacters.CloseConnection(reader);
+                    _dbConnectorCharacters.CloseConnection(command, reader);
                 }
                 catch (MySqlException ex)
                 {
@@ -618,7 +618,7 @@ namespace Ticket_Genie
                     if (reader.Read())
                         hasRows = reader.HasRows;
 
-                    _dbConnectorWorld.CloseConnection(reader);
+                    _dbConnectorWorld.CloseConnection(command, reader);
                 }
                 catch (MySqlException ex)
                 {
@@ -650,7 +650,7 @@ namespace Ticket_Genie
                         maxStackSize = reader.GetInt32(1);
                     }
 
-                    _dbConnectorWorld.CloseConnection(reader);
+                    _dbConnectorWorld.CloseConnection(command, reader);
 
                     if (maxCount == 0 && maxStackSize >= itemCount)
                         return true;

@@ -19,11 +19,12 @@ public class DBConnector
 
     public MySqlConnection GetConnection() { return connection; }
 
-    public void CloseConnection(MySqlDataReader reader = null)
+    public void CloseConnection(MySqlCommand command, MySqlDataReader reader = null)
     {
         if (reader != null && !reader.IsClosed)
             reader.Close();
 
+        command.Parameters.Clear();
         connection.Close();
     }
 }

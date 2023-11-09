@@ -1,6 +1,8 @@
 ﻿using Essy.Tools.InputBox;
 using MySql.Data.MySqlClient;
+using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Ticket_Genie
 {
@@ -14,6 +16,7 @@ namespace Ticket_Genie
         private static bool isValidPlayer;
 
         private readonly DBConnector _dbConnectorCharacters;
+        private readonly TicketManager _ticketManager;
 
         public TicketHistoryWindow()
         {
@@ -31,6 +34,7 @@ namespace Ticket_Genie
             }.ToString();
 
             _dbConnectorCharacters = new DBConnector(charactersConnectionString);
+            _ticketManager = new TicketManager();
 
             if (Properties.Settings.Default.PlayerGUID == 0)
             {
@@ -57,7 +61,7 @@ namespace Ticket_Genie
                                 playerName = reader.GetString(1);
                             }
 
-                            _dbConnectorCharacters.CloseConnection(reader);
+                            _dbConnectorCharacters.CloseConnection(command, reader);
 
                             if (playerGUID == 0)
                                 InvalidPlayer();
@@ -85,6 +89,26 @@ namespace Ticket_Genie
         {
             if (!isValidPlayer)
                 Close();
+
+            // Retrieve all tickets and display them on the UI
+            var tickets = _ticketManager.GetTicketHistory();
+
+            if (tickets == null)
+                return;
+
+            foreach (var ticket in tickets)
+            {
+                // Add the ticket to the left side list on the main window
+                Ticket listItem = new Ticket
+                {
+                    id = ticket.id,
+                    name = ticket.name
+                };
+
+                TicketList.Items.Add(listItem);
+            }
+
+            MessageBox.Show($"All of {playerName}'s ticket history has been loaded.", "Ticket History List", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void TicketHisoryWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -95,11 +119,46 @@ namespace Ticket_Genie
             Properties.Settings.Default.Save();
         }
 
+        private void OnTicketSelected(object sender, RoutedEventArgs e)
+        {
+            // Retrieve selected ticket
+            if (sender is ListBox listBox && listBox.SelectedItem is Ticket selectedTicket)
+            {
+                var ticketDetails = _ticketManager.GetTicket(selectedTicket.id);
+
+                if (ticketDetails != null)
+                {
+                    // Convert Linux timestamp to readable date
+                    var creationTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.createTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    var lastModifiedTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.lastModifiedTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    // Update the UI ticket info
+                    TicketID.Text = ticketDetails.id.ToString();
+                    TicketName.Text = ticketDetails.name;
+                    PlayerGUID.Text = ticketDetails.playerGUID.ToString();
+                    ViewedCount.Text = ticketDetails.viewed.ToString();
+                    Creation.Text = creationTime;
+                    LastModified.Text = lastModifiedTime;
+                    HandledBy.Text = ticketDetails.handledBy;
+                    TicketDescription.Text = ticketDetails.description;
+                }
+            }
+        }
+
         private void InvalidPlayer()
         {
             isValidPlayer = false;
 
             MessageBox.Show("Could not find a player associated with that name, the Account Tools window will now close.", "No Player Found", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void OnReadResponseClick(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ResponseTicketID = int.Parse(TicketID.Text);
+            Properties.Settings.Default.Save();
+
+            var readResponseWindow = new ReadResponseWindow();
+            readResponseWindow.Show();
         }
     }
 }

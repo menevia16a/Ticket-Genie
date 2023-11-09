@@ -53,7 +53,7 @@ namespace Ticket_Genie
 
                     CharactersList.ItemsSource = characters;
 
-                    _dbConnector.CloseConnection(reader);
+                    _dbConnector.CloseConnection(command, reader);
                     return characters;
                 }
                 catch (MySqlException ex)

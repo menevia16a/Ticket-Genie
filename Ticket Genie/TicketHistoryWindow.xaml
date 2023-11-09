@@ -7,9 +7,39 @@
         mc:Ignorable="d"
         Background="#FF8A8A8A"
         ResizeMode="NoResize"
-        Title="Ticket History" Height="450" Width="650"
+        Title="Ticket History" Height="613" Width="884"
         WindowStyle="ToolWindow" Closing="TicketHisoryWindow_Closing">
-    <Grid>
-        
+    <Grid Height="613" VerticalAlignment="Top" Margin="0,0,-30,0">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="0,0,0,42">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="150"/>
+                <ColumnDefinition Width="*" MinWidth="150"/>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="TicketList" Grid.Column="0" Background="#FF58607B" SelectionChanged="OnTicketSelected" SelectionMode="Single" DisplayMemberPath="name" Foreground="CornflowerBlue" Margin="0,0,0,32"/>
+            <ListView x:Name="TicketView" Grid.Column="1" Background="#FF58607B" HorizontalContentAlignment="Left" IsHitTestVisible="False" Foreground="CornflowerBlue" Margin="0,0,28,32">
+                <StackPanel Margin="5,5,0,5">
+                    <TextBlock HorizontalAlignment="Left" Text="Ticket ID:" FontWeight="Bold" Width="57"/>
+                    <TextBlock x:Name="TicketID" HorizontalAlignment="Left" Margin="60 -15 0 0" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Character Name:" FontWeight="Bold" Margin="0 5 0 0"/>
+                    <TextBlock x:Name="TicketName" HorizontalAlignment="Left" Margin="100 -15 0 0" Width="100"/>
+                    <TextBlock HorizontalAlignment="Left" Text="GUID:" FontWeight="Bold"/>
+                    <TextBlock x:Name="PlayerGUID" HorizontalAlignment="Left" Margin="35 -15 0 0" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Viewed Count:" FontWeight="Bold"/>
+                    <TextBlock x:Name="ViewedCount" HorizontalAlignment="Left" Margin="90 -15 0 0" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Creation:" FontWeight="Bold" Width="54"/>
+                    <TextBlock x:Name="Creation" HorizontalAlignment="Left" Margin="60 -15 0 0" Width="125"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Last Modified:" FontWeight="Bold" Width="82"/>
+                    <TextBlock x:Name="LastModified" HorizontalAlignment="Left" Margin="85 -15 0 0" Width="125"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Handled By:" FontWeight="Bold" Width="71"/>
+                    <TextBlock x:Name="HandledBy" HorizontalAlignment="Left" Margin="75 -15 0 0" Width="60"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Ticket Description:" FontWeight="Bold"/>
+                    <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="382" Height="373"/>
+                </StackPanel>
+            </ListView>
+        </Grid>
+        <Button Content="Read Response" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnReadResponseClick" Margin="0,545,0,45" Width="92"/>
     </Grid>
 </Window>

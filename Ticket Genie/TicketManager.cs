@@ -41,7 +41,7 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
 
-                    _dbConnector.CloseConnection();
+                    _dbConnector.CloseConnection(command);
                 }
                 catch (MySqlException ex)
                 {
@@ -63,7 +63,7 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
 
-                    _dbConnector.CloseConnection();
+                    _dbConnector.CloseConnection(command);
                 }
                 catch (MySqlException ex)
                 {
@@ -85,7 +85,7 @@ namespace Ticket_Genie
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
 
-                    _dbConnector.CloseConnection();
+                    _dbConnector.CloseConnection(command);
                 }
                 catch (MySqlException ex)
                 {
@@ -108,44 +108,58 @@ namespace Ticket_Genie
                     if (reader.Read())
                     {
                         int type = reader.GetInt32(1);
+                        int playerGuid = reader.GetInt32(2);
+                        string name = reader.GetString(3);
+                        string description = reader.GetString(4);
+                        int createTime = reader.GetInt32(5);
+                        int lastModifiedTime = reader.GetInt32(6);
+                        string handledBy = "";
+                        int closedBy = reader.GetInt32(7);
+                        string response = reader.GetString(8);
+                        int completed = reader.GetInt32(9);
+                        int viewed = reader.GetInt32(10);
 
-                        // Check if the ticket is already closed, and don't list
-                        if (type == 0)
+                        _dbConnector.CloseConnection(command, reader);
+
+                        if (closedBy != 0)
                         {
-                            int playerGuid = reader.GetInt32(2);
-                            string name = reader.GetString(3);
-                            string description = reader.GetString(4);
-                            int createTime = reader.GetInt32(5);
-                            int lastModifiedTime = reader.GetInt32(6);
-                            int closedBy = reader.GetInt32(7);
-                            string response = reader.GetString(8);
-                            int completed = reader.GetInt32(9);
-                            int viewed = reader.GetInt32(10);
+                            // Translate the closedBy guid to a character name for handledBy
+                            connection.Open();
+                            command = new MySqlCommand("SELECT name FROM characters WHERE guid = @closedByGuid", connection);
+                            command.Parameters.AddWithValue("@closedByGuid", closedBy);
+                            reader = command.ExecuteReader();
 
-                            reader.Close();
-
-                            var command2 = new MySqlCommand("UPDATE gm_ticket SET viewed = @viewedCount WHERE id = @id", connection);
-                            command2.Parameters.AddWithValue("@viewedCount", viewed + 1);
-                            command2.Parameters.AddWithValue("@id", id);
-                            command2.ExecuteNonQuery();
-
-                            _dbConnector.CloseConnection(reader);
-
-                            return new Ticket
+                            if (reader.Read() && reader.HasRows)
                             {
-                                id = id,
-                                type = type,
-                                playerGUID = playerGuid,
-                                name = name,
-                                description = description,
-                                createTime = createTime,
-                                lastModifiedTime = lastModifiedTime,
-                                closedBy = closedBy,
-                                response = response,
-                                completed = completed,
-                                viewed = viewed + 1
-                            };
+                                handledBy = reader.GetString(0);
+                            }
+
+                            _dbConnector.CloseConnection(command, reader);
                         }
+
+                        connection.Open();
+                        command = new MySqlCommand("UPDATE gm_ticket SET viewed = @viewedCount WHERE id = @id", connection);
+                        command.Parameters.AddWithValue("@viewedCount", viewed + 1);
+                        command.Parameters.AddWithValue("@id", id);
+                        command.ExecuteNonQuery();
+
+                        _dbConnector.CloseConnection(command);
+
+                        return new Ticket
+                        {
+                            id = id,
+                            type = type,
+                            playerGUID = playerGuid,
+                            name = name,
+                            description = description,
+                            createTime = createTime,
+                            lastModifiedTime = lastModifiedTime,
+                            handledBy = handledBy,
+                            closedBy = closedBy,
+                            response = response,
+                            completed = completed,
+                            viewed = viewed + 1
+                        };
                     }
                 }
                 catch (MySqlException ex)
@@ -184,7 +198,44 @@ namespace Ticket_Genie
                         }
                     }
 
-                    _dbConnector.CloseConnection(reader);
+                    _dbConnector.CloseConnection(command, reader);
+
+                    return tickets;
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+                return null;
+            }
+        }
+
+        public IEnumerable<Ticket> GetTicketHistory()
+        {
+            // Get only closed/completed tickets connected to the player
+            using (var connection = _dbConnector.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    var command = new MySqlCommand("SELECT id, name FROM gm_ticket WHERE type = 1 AND name = @playerName", connection);
+                    command.Parameters.AddWithValue("@playerName", Properties.Settings.Default.PlayerName);
+                    var reader = command.ExecuteReader();
+                    var tickets = new List<Ticket>();
+
+                    while (reader.Read())
+                    {
+                        {
+                            tickets.Add(new Ticket
+                            {
+                                id = reader.GetInt32(0),
+                                name = reader.GetString(1)
+                            });
+                        }
+                    }
+
+                    _dbConnector.CloseConnection(command, reader);
 
                     return tickets;
                 }

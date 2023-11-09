@@ -122,14 +122,14 @@ namespace Ticket_Genie
                         }
                         else { MessageBox.Show("Invalid username or insufficient security level", "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
 
-                        _dbConnector.CloseConnection(reader);
+                        _dbConnector.CloseConnection(command, reader);
                     }
                     else
                     {
                         loginSuccess = false;
                         DialogResult = false;
 
-                        _dbConnector.CloseConnection(reader);
+                        _dbConnector.CloseConnection(command, reader);
                         Close();
                     }
                 }

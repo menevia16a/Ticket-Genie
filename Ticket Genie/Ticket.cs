@@ -8,6 +8,7 @@ public class Ticket
     public int createTime { get; set; }
     public int lastModifiedTime { get; set; }
     public int closedBy { get; set; }
+    public string handledBy { get; set; }
     public string response { get; set; }
     public int completed { get; set; }
     public int viewed { get; set; }

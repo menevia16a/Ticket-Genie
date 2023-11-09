@@ -214,5 +214,17 @@ namespace Ticket_Genie.Properties {
                 this["PlayerName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ResponseTicketID {
+            get {
+                return ((int)(this["ResponseTicketID"]));
+            }
+            set {
+                this["ResponseTicketID"] = value;
+            }
+        }
     }
 }
