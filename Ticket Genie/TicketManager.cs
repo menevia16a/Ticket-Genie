@@ -59,7 +59,7 @@ namespace Ticket_Genie
                 {
                     connection.Open();
                     var command = new MySqlCommand("UPDATE gm_ticket SET closedBy = @accountID, completed = 1, resolvedBy = @accountID WHERE id = @ticketID", connection);
-                    command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
+                    command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.CharacterGUID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
 
