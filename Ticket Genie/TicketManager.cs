@@ -37,7 +37,6 @@ namespace Ticket_Genie
                     connection.Open();
                     var command = new MySqlCommand("UPDATE gm_ticket SET response = @response WHERE id = @ticketID", connection);
                     command.Parameters.AddWithValue("@response", response);
-                    command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
 
@@ -58,8 +57,8 @@ namespace Ticket_Genie
                 try
                 {
                     connection.Open();
-                    var command = new MySqlCommand("UPDATE gm_ticket SET closedBy = @accountID, completed = 1, resolvedBy = @accountID WHERE id = @ticketID", connection);
-                    command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.CharacterGUID);
+                    var command = new MySqlCommand("UPDATE gm_ticket SET closedBy = @characterGuid, completed = 1, resolvedBy = @characterGuid WHERE id = @ticketID", connection);
+                    command.Parameters.AddWithValue("@characterGuid", Properties.Settings.Default.CharacterGUID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
 
