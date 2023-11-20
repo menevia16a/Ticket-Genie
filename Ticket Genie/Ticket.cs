@@ -12,4 +12,5 @@ public class Ticket
     public string response { get; set; }
     public int completed { get; set; }
     public int viewed { get; set; }
+    public int resolvedBy { get; set; }
 }

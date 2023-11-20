@@ -32,7 +32,7 @@
                     <TextBlock HorizontalAlignment="Left" Text="Ticket ID:" FontWeight="Bold" Width="57"/>
                     <TextBlock x:Name="TicketID" HorizontalAlignment="Left" Margin="60 -15 0 0" Width="50"/>
                     <TextBlock HorizontalAlignment="Left" Text="Character Name:" FontWeight="Bold" Margin="0 5 0 0"/>
-                    <TextBlock x:Name="TicketName" HorizontalAlignment="Left" Margin="100 -15 0 0" Width="100"/>
+                    <TextBlock x:Name="TicketName" HorizontalAlignment="Left" Margin="100 -15 0 0" Width="125"/>
                     <TextBlock HorizontalAlignment="Left" Text="GUID:" FontWeight="Bold"/>
                     <TextBlock x:Name="PlayerGUID" HorizontalAlignment="Left" Margin="35 -15 0 0" Width="50"/>
                     <TextBlock HorizontalAlignment="Left" Text="Viewed Count:" FontWeight="Bold"/>

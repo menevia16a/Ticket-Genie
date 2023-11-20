@@ -51,14 +51,14 @@ namespace Ticket_Genie
                         try
                         {
                             connection.Open();
-                            var command = new MySqlCommand("SELECT guid, name FROM characters WHERE name = @name LIMIT 1", connection);
-                            command.Parameters.AddWithValue("@name", Properties.Settings.Default.PlayerName);
+                            var command = new MySqlCommand("SELECT guid FROM characters WHERE name = @name LIMIT 1", connection);
+                            playerName = Properties.Settings.Default.PlayerName;
+                            command.Parameters.AddWithValue("@name", playerName);
                             var reader = command.ExecuteReader();
 
                             if (reader.Read() && reader.HasRows)
                             {
                                 playerGUID = reader.GetInt32(0);
-                                playerName = reader.GetString(1);
                             }
 
                             _dbConnectorCharacters.CloseConnection(command, reader);

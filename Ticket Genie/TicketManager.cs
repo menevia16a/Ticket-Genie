@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -57,7 +58,8 @@ namespace Ticket_Genie
                 try
                 {
                     connection.Open();
-                    var command = new MySqlCommand("UPDATE gm_ticket SET closedBy = @characterGuid, completed = 1, resolvedBy = @characterGuid WHERE id = @ticketID", connection);
+                    MessageBox.Show(Properties.Settings.Default.CharacterGUID.ToString());
+                    var command = new MySqlCommand("UPDATE gm_ticket SET completed = 1, resolvedBy = @characterGuid WHERE id = @ticketID", connection);
                     command.Parameters.AddWithValue("@characterGuid", Properties.Settings.Default.CharacterGUID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
@@ -79,8 +81,8 @@ namespace Ticket_Genie
                 try
                 {
                     connection.Open();
-                    var command = new MySqlCommand("UPDATE gm_ticket SET type = 1, closedBy = @accountID WHERE id = @ticketID", connection);
-                    command.Parameters.AddWithValue("@accountID", Properties.Settings.Default.AccountID);
+                    var command = new MySqlCommand("UPDATE gm_ticket SET type = 1, closedBy = @characterGUID WHERE id = @ticketID", connection);
+                    command.Parameters.AddWithValue("@characterGuid", Properties.Settings.Default.CharacterGUID);
                     command.Parameters.AddWithValue("@ticketID", ticketID);
                     command.ExecuteNonQuery();
 
@@ -100,7 +102,7 @@ namespace Ticket_Genie
                 try
                 {
                     connection.Open();
-                    var command = new MySqlCommand("SELECT id, type, playerGuid, name, description, createTime, lastModifiedTime, closedBy, response, completed, viewed FROM gm_ticket WHERE id = @id", connection);
+                    var command = new MySqlCommand("SELECT id, type, playerGuid, name, description, createTime, lastModifiedTime, closedBy, response, completed, viewed, resolvedBy FROM gm_ticket WHERE id = @id", connection);
                     command.Parameters.AddWithValue("@id", id);
                     var reader = command.ExecuteReader();
 
@@ -117,24 +119,12 @@ namespace Ticket_Genie
                         string response = reader.GetString(8);
                         int completed = reader.GetInt32(9);
                         int viewed = reader.GetInt32(10);
+                        int resolvedBy = reader.GetInt32(11);
 
                         _dbConnector.CloseConnection(command, reader);
 
                         if (closedBy != 0)
-                        {
-                            // Translate the closedBy guid to a character name for handledBy
-                            connection.Open();
-                            command = new MySqlCommand("SELECT name FROM characters WHERE guid = @closedByGuid", connection);
-                            command.Parameters.AddWithValue("@closedByGuid", closedBy);
-                            reader = command.ExecuteReader();
-
-                            if (reader.Read() && reader.HasRows)
-                            {
-                                handledBy = reader.GetString(0);
-                            }
-
-                            _dbConnector.CloseConnection(command, reader);
-                        }
+                            handledBy = resolvedBy == 0 ? GuidToName(closedBy) : GuidToName(resolvedBy);
 
                         connection.Open();
                         command = new MySqlCommand("UPDATE gm_ticket SET viewed = @viewedCount WHERE id = @id", connection);
@@ -157,7 +147,8 @@ namespace Ticket_Genie
                             closedBy = closedBy,
                             response = response,
                             completed = completed,
-                            viewed = viewed + 1
+                            viewed = viewed + 1,
+                            resolvedBy = resolvedBy,
                         };
                     }
                 }
@@ -245,6 +236,29 @@ namespace Ticket_Genie
 
                 return null;
             }
+        }
+
+        // Translate a given guid in to a character's name
+        private string GuidToName(int guid)
+        {
+            string name = "";
+
+            using (var connection = _dbConnector.GetConnection())
+            {
+                connection.Open();
+                var command = new MySqlCommand("SELECT name FROM characters WHERE guid = @GMGuid", connection);
+                command.Parameters.AddWithValue("@GMGuid", guid);
+                var reader = command.ExecuteReader();
+
+                if (reader.Read() && reader.HasRows)
+                {
+                    name = reader.GetString(0);
+                }
+
+                _dbConnector.CloseConnection(command, reader);
+            }
+
+            return name;
         }
     }
 }

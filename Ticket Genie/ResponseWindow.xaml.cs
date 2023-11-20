@@ -37,8 +37,8 @@ namespace Ticket_Genie
                 _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);
                 _ticketManager.CompleteTicket(Properties.Settings.Default.CurrentTicketID);
                 _ticketManager.UpdateTickets();
-                _mainWindow.RefreshTicketList();
                 MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been completed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                _mainWindow.RefreshTicketList();
                 Close();
             }
         }
