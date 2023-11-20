@@ -64,7 +64,7 @@
             <StackPanel Orientation="Vertical" Height="246" Width="386">
                 <TextBlock Text="Subject:" HorizontalAlignment="Center"/>
                 <TextBox x:Name="SubjectTextBox" Width="150" Margin="5" Background="#FF58607B" Foreground="CornflowerBlue"/>
-                <TextBlock Text="Message:" HorizontalAlignment="Center"/>
+                <TextBlock Text="Message:" HorizontalAlignment="Center" ToolTip="The message must be written as one line."/>
                 <TextBox x:Name="MessageTextBox" Width="294" Margin="5" Height="150" MaxHeight="160" Background="#FF58607B" Foreground="CornflowerBlue" TextWrapping="Wrap" HorizontalAlignment="Center"/>
                 <Label Content="Items:" HorizontalAlignment="Center" ToolTip="The right side of the colon specifies item ID's, the right side is the amount of the specified item."/>
             </StackPanel>
