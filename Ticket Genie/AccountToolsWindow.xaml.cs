@@ -66,7 +66,6 @@ namespace Ticket_Genie
         {
             { "Shattrath", new PortLocation { name = "Shattrath", positionX = -1755.668213f, positionY = 5153.974609f, positionZ = -37.204845f, map = 530, orientation = 1.801668f } },
             { "Dalaran", new PortLocation { name = "Dalaran", positionX = 5846.850098f, positionY = 648.439270f, positionZ = 647.512695f, map = 571, orientation = 0.103653f } },
-            { "City of Karma", new PortLocation { name = "City of Karma", positionX = 11245.474609f, positionY = 11638.021484f, positionZ = 0.013634f, map = 727, orientation = 0.017275f } },
         };
 
         private static PlayerFaction playerFaction;
@@ -275,10 +274,10 @@ namespace Ticket_Genie
             switch (playerFaction)
             {
                 case PlayerFaction.Alliance:
-                    isValidLocation = alliancePortLocations.TryGetValue(portName, out portLocation) && neutralPortLocations.TryGetValue(portName, out portLocation);
+                    isValidLocation = alliancePortLocations.TryGetValue(portName, out portLocation) || neutralPortLocations.TryGetValue(portName, out portLocation);
                     break;
                 case PlayerFaction.Horde:
-                    isValidLocation = hordePortLocations.TryGetValue(portName, out portLocation) && neutralPortLocations.TryGetValue(portName, out portLocation);
+                    isValidLocation = hordePortLocations.TryGetValue(portName, out portLocation) || neutralPortLocations.TryGetValue(portName, out portLocation);
                     break;
                 case PlayerFaction.Invalid:
                     MessageBox.Show("Invalid player faction.", "Porting Error", MessageBoxButton.OK, MessageBoxImage.Error);
