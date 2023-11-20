@@ -1,8 +1,5 @@
 using MySql.Data.MySqlClient;
-using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.ServiceModel.Configuration;
 using System.Windows;
 
 namespace Ticket_Genie
