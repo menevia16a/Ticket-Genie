@@ -34,7 +34,7 @@
                     <TextBlock HorizontalAlignment="Left" Text="Last Modified:" FontWeight="Bold" Width="82"/>
                     <TextBlock x:Name="LastModified" HorizontalAlignment="Left" Margin="85 -15 0 0" Width="125"/>
                     <TextBlock HorizontalAlignment="Left" Text="Handled By:" FontWeight="Bold" Width="71"/>
-                    <TextBlock x:Name="HandledBy" HorizontalAlignment="Left" Margin="75 -15 0 0" Width="60"/>
+                    <TextBlock x:Name="HandledBy" HorizontalAlignment="Left" Margin="75 -15 0 0" Width="105"/>
                     <TextBlock HorizontalAlignment="Left" Text="Ticket Description:" FontWeight="Bold"/>
                     <TextBlock x:Name="TicketDescription" TextWrapping="Wrap" Width="382" Height="373"/>
                 </StackPanel>

@@ -53,7 +53,6 @@
                 <ComboBoxItem x:Name="PortComboBoxItem3" Content=""/>
                 <ComboBoxItem x:Name="PortComboBoxItem4" Content=""/>
                 <ComboBoxItem x:Name="PortComboBoxItem5" Content=""/>
-                <ComboBoxItem x:Name="PortComboBoxItem6" Content=""/>
             </ComboBox>
             <Button x:Name="PortButton" Content="Port" Margin="5" Height="24" Width="40" Background="#6495ED" Foreground="White" Click="OnPortClick"/>
         </StackPanel>

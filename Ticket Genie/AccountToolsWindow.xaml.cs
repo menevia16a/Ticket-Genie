@@ -200,7 +200,6 @@ namespace Ticket_Genie
                         // Include neutral port locations
                         PortComboBoxItem4.Content = neutralPortLocations.ElementAt(0).Key;
                         PortComboBoxItem5.Content = neutralPortLocations.ElementAt(1).Key;
-                        PortComboBoxItem6.Content = neutralPortLocations.ElementAt(2).Key;
                     }
 
                     _dbConnectorCharacters.CloseConnection(command, reader);

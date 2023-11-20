@@ -8,13 +8,11 @@ namespace Ticket_Genie
     public partial class ResponseWindow : Window
     {
         private readonly TicketManager _ticketManager;
-        private readonly MainWindow _mainWindow;
 
         public ResponseWindow()
         {
             InitializeComponent();
             _ticketManager = new TicketManager();
-            _mainWindow = new MainWindow();
             Loaded += ResponseWindow_Loaded;
         }
 
@@ -35,10 +33,10 @@ namespace Ticket_Genie
             if (result == MessageBoxResult.Yes)
             {
                 _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);
+                _ticketManager.UpdateTickets();
                 _ticketManager.CompleteTicket(Properties.Settings.Default.CurrentTicketID);
                 _ticketManager.UpdateTickets();
                 MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been completed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                _mainWindow.RefreshTicketList();
                 Close();
             }
         }

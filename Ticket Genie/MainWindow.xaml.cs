@@ -91,6 +91,13 @@ namespace Ticket_Genie
 
                 if (ticketDetails != null)
                 {
+                    if (ticketDetails.closedBy != 0)
+                    {
+                        MessageBox.Show("Ticket appears to already be closed. Selection is invalid, refreshing the ticket list.", "Ticket Selection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        RefreshTicketList();
+                        return;
+                    }
+
                     // Convert Linux timestamp to readable date
                     var creationTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.createTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
                     var lastModifiedTime = DateTimeOffset.FromUnixTimeSeconds(ticketDetails.lastModifiedTime).LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
