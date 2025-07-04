@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Ticket_Genie
 {
@@ -8,6 +9,9 @@ namespace Ticket_Genie
     public partial class ResponseWindow : Window
     {
         private readonly TicketManager _ticketManager;
+
+        // Event to notify when a ticket is completed
+        public event Action TicketCompleted;
 
         public ResponseWindow()
         {
@@ -37,6 +41,7 @@ namespace Ticket_Genie
                 _ticketManager.CompleteTicket(Properties.Settings.Default.CurrentTicketID);
                 _ticketManager.UpdateTickets();
                 MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been completed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                TicketCompleted?.Invoke(); // Raise event
                 Close();
             }
         }

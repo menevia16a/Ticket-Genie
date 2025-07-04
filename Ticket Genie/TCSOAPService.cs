@@ -73,11 +73,7 @@ namespace Ticket_Genie
 
         public bool ExecuteSOAPCommand(string command)
         {
-            if (Call(command)?.Length != 0)
-            {
-                MessageBox.Show("Error executing SOAP command.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+            // TODO: Maybe better error handling but checking the response string length is not accurate enough.
 
             return true;
         }

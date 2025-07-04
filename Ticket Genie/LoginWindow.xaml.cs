@@ -18,6 +18,8 @@ namespace Ticket_Genie
         {
             InitializeComponent();
 
+            UsernameTextBox.Focus(); // Automatically focus the username field
+
             var connectionString = new MySqlConnectionStringBuilder
             {
                 Server = Properties.Settings.Default.SQLHost,

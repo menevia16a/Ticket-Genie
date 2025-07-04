@@ -199,6 +199,7 @@ namespace Ticket_Genie
 
             // Display GM Response window
             var gmResponseWindow = new ResponseWindow();
+            gmResponseWindow.TicketCompleted += RefreshTicketList; // Subscribe to event
             gmResponseWindow.ShowDialog();
         }
 
