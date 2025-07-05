@@ -36,9 +36,12 @@ namespace Ticket_Genie
 
             if (needsRestart)
             {
-                // Restart MainWindow after settings are saved
-                System.Windows.Forms.Application.Restart();
-                Application.Current.Shutdown();
+                // Open a new MainWindow and close this one
+                Application.Current.Dispatcher.InvokeAsync(() => {
+                    var newWindow = new MainWindow();
+                    newWindow.Show();
+                });
+                this.Close();
                 return;
             }
 
