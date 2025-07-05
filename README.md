@@ -27,6 +27,11 @@ ALTER TABLE `account_access`
 ADD COLUMN `TicketGeniePin` SMALLINT(5) NULL DEFAULT NULL;
 This column can be null; it will be set the first time a GM logs in with TicketGenie.
 
+### Worldserver Configuration Requirement
+- You must enable the `SOAP` service in your worldserver configuration file (`worldserver.conf`).
+- Ensure that the `SOAP` port is set correctly and matches the one you will use in TicketGenie.
+- Set Ra.MinLevel = 2 to allow GM access via SOAP.
+
 ## Usage
 - **Login:** Use your GM username. On first login, set your PIN. On subsequent logins, enter your PIN.
 - **Tickets:** View, respond to, and close tickets from the main window.
