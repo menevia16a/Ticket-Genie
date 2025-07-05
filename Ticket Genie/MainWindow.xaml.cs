@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Ticket_Genie
 {
@@ -20,6 +21,7 @@ namespace Ticket_Genie
             var connectionSettingsWindow = new ConnectionSettingsWindow();
 
             // Check for missing connection settings
+            bool needsRestart = false;
             while (IsAnyConnectionSettingMissing())
             {
                 MessageBox.Show("Some connection settings are missing or empty. Please fill in all required fields.", "Connection Settings Required", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -29,6 +31,15 @@ namespace Ticket_Genie
                     return;
                 }
                 JsonTools.UpdateConnectionSettings();
+                needsRestart = true;
+            }
+
+            if (needsRestart)
+            {
+                // Restart MainWindow after settings are saved
+                System.Windows.Forms.Application.Restart();
+                Application.Current.Shutdown();
+                return;
             }
 
             if (!File.Exists("SQLConnectionSettings.json") || !File.Exists("SOAPConnectionSettings.json"))

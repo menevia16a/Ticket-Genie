@@ -19,7 +19,7 @@ TicketGenie is an open-source tool designed to make the lives of Game Masters (G
 3. The SOAP login uses your GM username and password.
 4. On your first login with a GM account, you will be prompted to set a 4-digit PIN. This PIN will be required for future logins.
 
-> **Privacy Note:** All connection settings and credentials are stored locally on your computer in a JSON file. This information is never sent anywhere outside your machine or shared with any third party.
+> **Privacy Note:** All connection settings and credentials are stored locally on your computer. This information is never sent anywhere outside your machine or shared with any third party.
 
 ### Database Requirement
 For the PIN functionality to work, you must add a column to your `auth.account_access` table. Run the following SQL script on your `auth` database:

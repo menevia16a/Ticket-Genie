@@ -9,6 +9,7 @@ namespace Ticket_Genie
         {
             InitializeComponent();
             PromptText.Text = prompt;
+
             if (isPassword)
             {
                 InputBox.Visibility = Visibility.Collapsed;
