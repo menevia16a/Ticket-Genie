@@ -37,7 +37,7 @@ namespace Ticket_Genie
             if (result == MessageBoxResult.Yes)
             {
                 _ticketManager.AppendResponse(Properties.Settings.Default.CurrentTicketID, TicketResponse.Text);
-                _ticketManager.UpdateTickets();
+                _ticketManager.UpdateTickets(); // Initial update to ensure response gets saved before completion
                 _ticketManager.CompleteTicket(Properties.Settings.Default.CurrentTicketID);
                 _ticketManager.UpdateTickets();
                 MessageBox.Show($"Ticket: {Properties.Settings.Default.CurrentTicketID} has been completed.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);

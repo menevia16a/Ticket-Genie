@@ -73,7 +73,8 @@ namespace Ticket_Genie
 
         public bool ExecuteSOAPCommand(string command)
         {
-            // TODO: Maybe better error handling but checking the response string length is not accurate enough.
+            // Call the SOAP service with the command
+            Call(command);
 
             return true;
         }
