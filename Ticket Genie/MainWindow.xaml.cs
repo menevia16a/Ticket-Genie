@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 
 namespace Ticket_Genie
 {
@@ -18,12 +19,41 @@ namespace Ticket_Genie
 
             var connectionSettingsWindow = new ConnectionSettingsWindow();
 
+            // Check for missing connection settings
+            while (IsAnyConnectionSettingMissing())
+            {
+                MessageBox.Show("Some connection settings are missing or empty. Please fill in all required fields.", "Connection Settings Required", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (connectionSettingsWindow.ShowDialog() != true)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
+                JsonTools.UpdateConnectionSettings();
+            }
+
             if (!File.Exists("SQLConnectionSettings.json") || !File.Exists("SOAPConnectionSettings.json"))
                 if (connectionSettingsWindow.ShowDialog() == true)
                     JsonTools.CreateDefaultJsonFiles(); // Check if JSON files exist, if not then create them
 
             _ticketManager = new TicketManager();
             Loaded += MainWindow_Loaded;
+        }
+
+        private bool IsAnyConnectionSettingMissing()
+        {
+            var s = Properties.Settings.Default;
+            // Check all required fields for SQL and SOAP
+            return string.IsNullOrWhiteSpace(s.SQLHost)
+                || s.SQLPort == 0
+                || string.IsNullOrWhiteSpace(s.SQLUsername)
+                || string.IsNullOrWhiteSpace(s.SQLPassword)
+                || string.IsNullOrWhiteSpace(s.AuthDB)
+                || string.IsNullOrWhiteSpace(s.CharacterDB)
+                || string.IsNullOrWhiteSpace(s.WorldDB)
+                || string.IsNullOrWhiteSpace(s.SOAPHost)
+                || s.SOAPPort == 0
+                || string.IsNullOrWhiteSpace(s.SOAPUsername)
+                || string.IsNullOrWhiteSpace(s.SOAPPassword);
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
