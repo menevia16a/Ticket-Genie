@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
+using System.Windows; // For MessageBox
 
 namespace Ticket_Genie
 {
@@ -39,48 +40,64 @@ namespace Ticket_Genie
 
     public static class JsonTools
     {
-        private static T DeserializeJSON<T>(string json, FileStream stream)
+        private static T DeserializeJSON<T>(FileStream stream)
         {
-            // Deserialize the JSON string and close the stream
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-            T obj = (T)serializer.ReadObject(stream);
-            stream.Close();
-            return obj;
+            try
+            {
+                if (stream.Length == 0)
+                    throw new SerializationException("File is empty");
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                T obj = (T)serializer.ReadObject(stream);
+                return obj;
+            }
+            finally
+            {
+                stream.Close();
+            }
         }
 
         public static void SerializeSQLConnectionSettingsJSON<SQLConnectionSettingsInfo>(SQLConnectionSettingsInfo SQLSettings)
         {
-            FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.OpenOrCreate);
-
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SQLConnectionSettingsInfo));
-            serializer.WriteObject(stream, SQLSettings);
-            stream.Close();
+            using (FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Create))
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SQLConnectionSettingsInfo));
+                serializer.WriteObject(stream, SQLSettings);
+            }
         }
 
         public static void SerializeSOAPConnectionSettingsJSON<SOAPConnectionSettingsInfo>(SOAPConnectionSettingsInfo SOAPSettings)
         {
-            FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.OpenOrCreate);
-
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SOAPConnectionSettingsInfo));
-            serializer.WriteObject(stream, SOAPSettings);
-            stream.Close();
+            using (FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Create))
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SOAPConnectionSettingsInfo));
+                serializer.WriteObject(stream, SOAPSettings);
+            }
         }
 
         private static SQLConnectionSettingsInfo DeserializeSQLConnectionSettingsJSON()
         {
             try
             {
-                FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Open);
-                return DeserializeJSON<SQLConnectionSettingsInfo>(stream.ToString(), stream);
+                using (FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Open))
+                {
+                    return DeserializeJSON<SQLConnectionSettingsInfo>(stream);
+                }
             }
-            catch
+            catch (SerializationException ex)
             {
+                MessageBox.Show($"SQL settings file is invalid or empty. Default settings will be recreated.\n{ex.Message}", "Settings Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 File.Delete("SQLConnectionSettings.json");
                 File.Delete("SOAPConnectionSettings.json");
                 CreateDefaultJsonFiles();
-
-                FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Open);
-                return DeserializeJSON<SQLConnectionSettingsInfo>(stream.ToString(), stream);
+                using (FileStream stream = File.Open("SQLConnectionSettings.json", FileMode.Open))
+                {
+                    return DeserializeJSON<SQLConnectionSettingsInfo>(stream);
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"Could not read SQL settings file.\n{ex.Message}", "Settings Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
             }
         }
 
@@ -88,17 +105,26 @@ namespace Ticket_Genie
         {
             try
             {
-                FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Open);
-                return DeserializeJSON<SOAPConnectionSettingsInfo>(stream.ToString(), stream);
+                using (FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Open))
+                {
+                    return DeserializeJSON<SOAPConnectionSettingsInfo>(stream);
+                }
             }
-            catch
+            catch (SerializationException ex)
             {
+                MessageBox.Show($"SOAP settings file is invalid or empty. Default settings will be recreated.\n{ex.Message}", "Settings Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 File.Delete("SQLConnectionSettings.json");
                 File.Delete("SOAPConnectionSettings.json");
                 CreateDefaultJsonFiles();
-
-                FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Open);
-                return DeserializeJSON<SOAPConnectionSettingsInfo>(stream.ToString(), stream);
+                using (FileStream stream = File.Open("SOAPConnectionSettings.json", FileMode.Open))
+                {
+                    return DeserializeJSON<SOAPConnectionSettingsInfo>(stream);
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"Could not read SOAP settings file.\n{ex.Message}", "Settings Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
             }
         }
 
