@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
-using Essy.Tools.InputBox;
 using MySql.Data.MySqlClient;
 
 namespace Ticket_Genie
@@ -108,7 +107,7 @@ namespace Ticket_Genie
             if (Properties.Settings.Default.PlayerGUID == 0)
             {
                 MessageBox.Show("No player was selected, you will be prompted to specify a player's name.", "No Player Detected", MessageBoxButton.OK, MessageBoxImage.Information);
-                Properties.Settings.Default.PlayerName = InputBox.ShowInputBox("Please enter a player's name", false);
+                Properties.Settings.Default.PlayerName = InputDialog.ShowDialog("Please enter a player's name", false);
                 Properties.Settings.Default.Save();
 
                 if (Properties.Settings.Default.PlayerName?.Length == 0) { InvalidPlayer(); }
