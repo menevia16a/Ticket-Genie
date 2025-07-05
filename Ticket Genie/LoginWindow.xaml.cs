@@ -1,6 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Windows;
-using Essy.Tools.InputBox;
 using System.Linq;
 using System.Windows.Input;
 
@@ -90,9 +89,9 @@ namespace Ticket_Genie
                                     reader3.Close();
                                     MessageBox.Show("First login detected. Please set a 4 digit PIN", "Pin Setup", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                                    string pin = InputBox.ShowInputBox("Input 4 digit PIN", true);
+                                    string pin = InputDialog.ShowDialog("Input 4 digit PIN", true);
 
-                                    if (pin.Count() == 4)
+                                    if (pin != null && pin.Count() == 4)
                                     {
                                         var command4 = new MySqlCommand("UPDATE account_access SET TicketGeniePin = @pin WHERE AccountID = @id", connection);
                                         command4.Parameters.AddWithValue("@pin", pin);
@@ -108,9 +107,9 @@ namespace Ticket_Genie
                                 }
                                 else
                                 {
-                                    string pin = InputBox.ShowInputBox("Input 4 digit PIN", true);
+                                    string pin = InputDialog.ShowDialog("Input 4 digit PIN", true);
 
-                                    if (password.ToString() == pin)
+                                    if (pin != null && password.ToString() == pin)
                                     {
                                         Properties.Settings.Default.AccountID = accountID;
                                         Properties.Settings.Default.Save();
