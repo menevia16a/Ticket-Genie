@@ -49,8 +49,9 @@ namespace Ticket_Genie
                     // Call the function again
                     return Call(command);
                 }
-                else
-                    return String.Empty;
+
+                // If false, will default to returning here
+                return String.Empty;
             }
         }
 
