@@ -21,6 +21,7 @@
             <MenuItem Header="Account Tools" Click="OnAccountToolsClick"/>
             <MenuItem Header="About" Click="OnAboutClick"/>
         </Menu>
+        <!-- Ticket display -->
         <Grid Grid.Row="1" Margin="0,0,0,42">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="150"/>
@@ -46,6 +47,7 @@
                 </StackPanel>
             </ListView>
         </Grid>
+        <!-- Ticket managing -->
         <Button Content="Refresh" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRefreshClick" Margin="10,517,0,15" Grid.Row="1" Width="58"/>
         <Button Content="Respond" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnRespondClick" Margin="0,517,10,15" Grid.Row="1" Width="58"/>
         <Button Content="Close" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Background="#6495ED" Foreground="White" Click="OnCloseClick" Margin="0,517,72,15" Grid.Row="1" Width="58"/>
